@@ -248,7 +248,7 @@ export const projects: Project[] = [
   },
   {
     id: 'proj-008',
-    name: 'McDonald\'s Retail Analytics',
+    name: "McDonald's Retail Analytics",
     service_line: 'Analytics',
     process: null,
     project_type: 'Proof of Concept',

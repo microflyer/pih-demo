@@ -52,23 +52,36 @@ Add Project CRUD and list/detail UX: create via modal (minimal fields), view and
 ## 4. Detail Page
 
 - **Route & load:** `/projects/$projectId`. Resolve project by id; if missing show Not Found or redirect to `/projects`. Same Header as list (Search, Theme, Profile).
-- **Form groups (collapsible sections):**
-  - **Basic info:** name, service_line, process, project_type, tech_solution, progear_id, ops_mentor, sdl_name, sign_off_status, bb, digital_manager, is_billiable, is_external, status, status_reason, stage.
-  - **Business & account:** business_unit_id, account_id (selects, account filtered by business_unit).
-  - **Financials & hours:** cost, revenue, estimated_hours, initial_hours, actual_hours, one_time_cost, potential_fte_saving, actual_fte_saving, actual_released_hc, in_scope_fte, business_impact.
-  - **Dates & theme:** start_date, end_date (date pickers), theme_id (if theme list exists).
-- **Layout:** Single or two-column grid per section; consistent spacing; "Back to list" to `/projects`.
+- **Layout:** Two-column layout on desktop:
+  - **Left (main):** Editable form sections
+  - **Right (sidebar):** Project summary card + Team members quick view
+- **Form groups (collapsible cards):**
+  - **Basic Info:** name, project_type, service_line, process
+  - **Technical:** tech_solution, progear_id
+  - **Team:** ops_mentor, sdl_name, digital_manager, bb
+  - **Status:** stage, status, status_reason, sign_off_status
+  - **Financial:** is_billiable, is_external, cost, revenue, one_time_cost
+  - **Hours:** estimated_hours, initial_hours, actual_hours
+  - **FTE & Impact:** potential_fte_saving, actual_fte_saving, actual_released_hc, in_scope_fte, business_impact
+  - **Dates:** start_date, end_date
+  - **Relations:** business_unit_id, account_id (read-only), theme_id
+- **Team Members Panel (sidebar):**
+  - List of assigned users with avatar/initials
+  - Add/Remove members button → opens member selection dialog
+  - Users selected from `users` entity, filtered by those not yet assigned
+- **Team Members Dialog:** Multi-select list of all users, search/filter by name, checkboxes to add/remove
 - **Save:** Explicit "Save" button; write to in-memory source, stay on page, optional toast; validation errors under fields.
-- **Team:** Not on detail page; members managed from list "Manage members" only (for now).
 
 ---
 
 ## 5. Team Management
 
-- **Entry:** List row only: "Manage members" in ⋮ menu opens the UI (no navigation).
-- **UI:** **Drawer** (right side), title e.g. project name + "Members". Add/remove users for this project only.
-- **Content:** List current members (from `teams` for this `project_id`, show user name/SSO from users data). Per-row "Remove". "Add member" — pick user from list (users data), add to teams. No explicit "Save" — add/remove writes in-memory immediately; close drawer when done.
-- **Data:** Only `teams` (project_id, user_id) created/removed; projects unchanged. Add `teams.ts` in entity-data if missing (empty or sample), read/write from list/drawer.
+- **Entry points:**
+  1. Detail page sidebar (primary) — team members panel with add/remove buttons
+  2. List row "Manage members" in ⋮ menu — opens dialog/drawer
+- **UI (Dialog/Drawer):** Title shows project name + "Members". Add/remove users for this project only.
+- **Content:** List current members (from `teams` for this `project_id`, show user name/SSO from users data). Per-row "Remove". "Add member" — pick user from list (users data), add to teams.
+- **Data:** Only `teams` (project_id, user_id) created/removed; projects unchanged.
 
 ---
 

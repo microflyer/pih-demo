@@ -11,6 +11,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { businessUnits } from '@/entity-data/business-units'
+import type { Project } from '@/entity-types/project'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import {
@@ -22,8 +24,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { businessUnits } from '@/entity-data/business-units'
-import type { Project } from '@/entity-types/project'
 import { projectsColumns as columns } from './projects-columns'
 
 type ProjectsTableProps = {
@@ -52,7 +52,11 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
       { columnId: 'name', searchKey: 'name', type: 'string' },
       { columnId: 'project_type', searchKey: 'project_type', type: 'array' },
       { columnId: 'status', searchKey: 'status', type: 'array' },
-      { columnId: 'business_unit', searchKey: 'business_unit_id', type: 'array' },
+      {
+        columnId: 'business_unit',
+        searchKey: 'business_unit_id',
+        type: 'array',
+      },
     ],
   })
 

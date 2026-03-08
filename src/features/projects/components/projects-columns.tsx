@@ -1,13 +1,13 @@
 import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
+import { accounts } from '@/entity-data/accounts'
+import { businessUnits } from '@/entity-data/business-units'
+import type { Project } from '@/entity-types/project'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { businessUnits } from '@/entity-data/business-units'
-import { accounts } from '@/entity-data/accounts'
-import type { Project } from '@/entity-types/project'
 import { DataTableRowActions } from './data-table-row-actions'
 
 const businessUnitMap = new Map(businessUnits.map((bu) => [bu.id, bu.name]))
@@ -73,21 +73,21 @@ export const projectsColumns: ColumnDef<Project>[] = [
       )
     },
     meta: {
-      className: cn(
-        'ps-0.5 max-md:sticky start-6 @4xl/content:table-cell'
-      ),
+      className: cn('ps-0.5 max-md:sticky start-6 @4xl/content:table-cell'),
     },
     enableHiding: false,
   },
   {
     id: 'business_unit',
-    accessorFn: (row) => businessUnitMap.get(row.business_unit_id) ?? row.business_unit_id,
+    accessorFn: (row) =>
+      businessUnitMap.get(row.business_unit_id) ?? row.business_unit_id,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Business Unit' />
     ),
     cell: ({ row }) => (
       <span className='text-muted-foreground'>
-        {businessUnitMap.get(row.original.business_unit_id) ?? row.original.business_unit_id}
+        {businessUnitMap.get(row.original.business_unit_id) ??
+          row.original.business_unit_id}
       </span>
     ),
     filterFn: (row, _id, value: string[]) =>
@@ -116,7 +116,8 @@ export const projectsColumns: ColumnDef<Project>[] = [
       </Badge>
     ),
     filterFn: (row, _id, value: string[]) =>
-      value.length === 0 || value.includes((row.getValue('project_type') as string) ?? ''),
+      value.length === 0 ||
+      value.includes((row.getValue('project_type') as string) ?? ''),
   },
   {
     accessorKey: 'status',
@@ -133,7 +134,8 @@ export const projectsColumns: ColumnDef<Project>[] = [
       )
     },
     filterFn: (row, _id, value: string[]) =>
-      value.length === 0 || value.includes((row.getValue('status') as string) ?? ''),
+      value.length === 0 ||
+      value.includes((row.getValue('status') as string) ?? ''),
   },
   {
     accessorKey: 'stage',
@@ -142,9 +144,7 @@ export const projectsColumns: ColumnDef<Project>[] = [
     ),
     cell: ({ row }) => {
       const stage = row.getValue('stage') as string | null
-      return (
-        <span className='text-muted-foreground'>{stage ?? '—'}</span>
-      )
+      return <span className='text-muted-foreground'>{stage ?? '—'}</span>
     },
   },
   {
@@ -153,7 +153,7 @@ export const projectsColumns: ColumnDef<Project>[] = [
       <DataTableColumnHeader column={column} title='Start' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm'>
+      <span className='text-sm text-muted-foreground'>
         {formatShortDate(row.original.start_date)}
       </span>
     ),
@@ -164,7 +164,7 @@ export const projectsColumns: ColumnDef<Project>[] = [
       <DataTableColumnHeader column={column} title='End' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm'>
+      <span className='text-sm text-muted-foreground'>
         {formatShortDate(row.original.end_date)}
       </span>
     ),
