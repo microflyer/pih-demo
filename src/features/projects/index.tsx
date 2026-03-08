@@ -4,9 +4,11 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { projects } from '@/entity-data'
+import { useProjects } from './components/projects-provider'
+import { ProjectsProvider } from './components/projects-provider'
 
-export function Projects() {
+function ProjectsContent() {
+  const { projects } = useProjects()
   return (
     <>
       <Header fixed>
@@ -30,5 +32,13 @@ export function Projects() {
         </div>
       </Main>
     </>
+  )
+}
+
+export function Projects() {
+  return (
+    <ProjectsProvider>
+      <ProjectsContent />
+    </ProjectsProvider>
   )
 }
