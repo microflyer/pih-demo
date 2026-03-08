@@ -30,4 +30,6 @@ export interface Project {
   start_date: string | null
   end_date: string | null
   theme_id: string | null
+  business_unit_id: string
+  account_id: string
 }
