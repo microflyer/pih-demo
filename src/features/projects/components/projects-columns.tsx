@@ -90,7 +90,7 @@ export const projectsColumns: ColumnDef<Project>[] = [
         {businessUnitMap.get(row.original.business_unit_id) ?? row.original.business_unit_id}
       </span>
     ),
-    filterFn: (row, id, value: string[]) =>
+    filterFn: (row, _id, value: string[]) =>
       value.length === 0 || value.includes(row.original.business_unit_id),
   },
   {
@@ -115,8 +115,8 @@ export const projectsColumns: ColumnDef<Project>[] = [
         {row.getValue('project_type') as string}
       </Badge>
     ),
-    filterFn: (row, id, value: string[]) =>
-      value.length === 0 || value.includes(row.getValue(id) as string),
+    filterFn: (row, _id, value: string[]) =>
+      value.length === 0 || value.includes((row.getValue('project_type') as string) ?? ''),
   },
   {
     accessorKey: 'status',
@@ -132,8 +132,8 @@ export const projectsColumns: ColumnDef<Project>[] = [
         </Badge>
       )
     },
-    filterFn: (row, id, value: string[]) =>
-      value.length === 0 || value.includes((row.getValue(id) as string) ?? ''),
+    filterFn: (row, _id, value: string[]) =>
+      value.length === 0 || value.includes((row.getValue('status') as string) ?? ''),
   },
   {
     accessorKey: 'stage',
