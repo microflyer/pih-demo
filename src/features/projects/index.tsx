@@ -5,6 +5,7 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { ProjectCreateDialog } from './components/project-create-dialog'
 import { ProjectsPrimaryButtons } from './components/projects-primary-buttons'
 import { ProjectsProvider, useProjects } from './components/projects-provider'
 import { ProjectsTable } from './components/projects-table'
@@ -12,12 +13,18 @@ import { ProjectsTable } from './components/projects-table'
 const route = getRouteApi('/_authenticated/projects/')
 
 function ProjectsContent() {
-  const { projects } = useProjects()
+  const { projects, openDialog, setOpenDialog } = useProjects()
   const search = route.useSearch()
   const navigate = route.useNavigate()
 
   return (
     <>
+      <ProjectCreateDialog
+        open={openDialog === 'create'}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog('create')
+        }}
+      />
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
