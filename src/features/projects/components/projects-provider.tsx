@@ -1,10 +1,13 @@
 import React, { useCallback, useState } from 'react'
+import useDialogState from '@/hooks/use-dialog-state'
 import {
   projects as initialProjects,
   teams as initialTeams,
 } from '@/entity-data'
 import type { Project } from '@/entity-types/project'
 import type { Team } from '@/entity-types/team'
+
+export type ProjectsDialogType = 'create' | 'delete' | 'members' | null
 
 type ProjectsContextType = {
   projects: Project[]
@@ -18,6 +21,10 @@ type ProjectsContextType = {
   getTeamsByProjectId: (projectId: string) => Team[]
   addTeamMember: (projectId: string, userId: string) => void
   removeTeamMember: (projectId: string, userId: string) => void
+  openDialog: ProjectsDialogType
+  setOpenDialog: (v: ProjectsDialogType) => void
+  currentProject: Project | null
+  setCurrentProject: React.Dispatch<React.SetStateAction<Project | null>>
 }
 
 const ProjectsContext = React.createContext<ProjectsContextType | null>(null)
@@ -34,6 +41,8 @@ function nextTeamId(teams: Team[]): string {
 export function ProjectsProvider({ children }: { children: React.ReactNode }) {
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [teams, setTeams] = useState<Team[]>(initialTeams)
+  const [openDialog, setOpenDialog] = useDialogState<ProjectsDialogType>(null)
+  const [currentProject, setCurrentProject] = useState<Project | null>(null)
 
   const addProject = useCallback((project: Project) => {
     setProjects((prev) => [...prev, project])
@@ -97,6 +106,10 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
     getTeamsByProjectId,
     addTeamMember,
     removeTeamMember,
+    openDialog,
+    setOpenDialog,
+    currentProject,
+    setCurrentProject,
   }
 
   return (

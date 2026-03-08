@@ -8,6 +8,7 @@ import { LongText } from '@/components/long-text'
 import { businessUnits } from '@/entity-data/business-units'
 import { accounts } from '@/entity-data/accounts'
 import type { Project } from '@/entity-types/project'
+import { DataTableRowActions } from './data-table-row-actions'
 
 const businessUnitMap = new Map(businessUnits.map((bu) => [bu.id, bu.name]))
 const accountMap = new Map(accounts.map((a) => [a.id, a.name]))
@@ -181,6 +182,6 @@ export const projectsColumns: ColumnDef<Project>[] = [
   },
   {
     id: 'actions',
-    cell: () => null,
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ]

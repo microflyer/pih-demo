@@ -5,6 +5,7 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { ProjectsPrimaryButtons } from './components/projects-primary-buttons'
 import { ProjectsProvider, useProjects } from './components/projects-provider'
 import { ProjectsTable } from './components/projects-table'
 
@@ -34,6 +35,7 @@ function ProjectsContent() {
               Create and manage projects.
             </p>
           </div>
+          <ProjectsPrimaryButtons />
         </div>
         <ProjectsTable data={projects} search={search} navigate={navigate} />
       </Main>
