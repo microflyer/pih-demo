@@ -1,4 +1,11 @@
-import { getRouteApi } from '@tanstack/react-router'
+import { useState } from 'react'
+import { LayoutGrid, List } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -8,16 +15,16 @@ import { ThemeSwitch } from '@/components/theme-switch'
 import { ProjectCreateDialog } from './components/project-create-dialog'
 import { ProjectDeleteDialog } from './components/project-delete-dialog'
 import { TeamMembersDialog } from './components/project-team-members-dialog'
+import { ProjectsList } from './components/projects-list'
 import { ProjectsPrimaryButtons } from './components/projects-primary-buttons'
 import { ProjectsProvider, useProjects } from './components/projects-provider'
 import { ProjectsTable } from './components/projects-table'
 
-const route = getRouteApi('/_authenticated/projects/')
+type ViewMode = 'list' | 'board'
 
 function ProjectsContent() {
   const { projects, openDialog, setOpenDialog } = useProjects()
-  const search = route.useSearch()
-  const navigate = route.useNavigate()
+  const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   return (
     <>
@@ -43,6 +50,35 @@ function ProjectsContent() {
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
+          {/* View Toggle */}
+          <div className='flex items-center gap-1 rounded-md border bg-background p-1'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='h-8 px-2'
+                  onClick={() => setViewMode('list')}
+                >
+                  <List className='h-4 w-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>List view</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'board' ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='h-8 px-2'
+                  onClick={() => setViewMode('board')}
+                >
+                  <LayoutGrid className='h-4 w-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Board view</TooltipContent>
+            </Tooltip>
+          </div>
           <ThemeSwitch />
           <ConfigDrawer />
           <ProfileDropdown />
@@ -57,7 +93,11 @@ function ProjectsContent() {
           </div>
           <ProjectsPrimaryButtons />
         </div>
-        <ProjectsTable data={projects} search={search} navigate={navigate} />
+        {viewMode === 'list' ? (
+          <ProjectsTable data={projects} />
+        ) : (
+          <ProjectsList projects={projects} />
+        )}
       </Main>
     </>
   )
