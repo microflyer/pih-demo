@@ -1,14 +1,20 @@
+import { getRouteApi } from '@tanstack/react-router'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { useProjects } from './components/projects-provider'
-import { ProjectsProvider } from './components/projects-provider'
+import { ProjectsProvider, useProjects } from './components/projects-provider'
+import { ProjectsTable } from './components/projects-table'
+
+const route = getRouteApi('/_authenticated/projects/')
 
 function ProjectsContent() {
   const { projects } = useProjects()
+  const search = route.useSearch()
+  const navigate = route.useNavigate()
+
   return (
     <>
       <Header fixed>
@@ -25,11 +31,11 @@ function ProjectsContent() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Projects</h2>
             <p className='text-muted-foreground'>
-              Create and manage projects. {projects.length} project(s) in
-              catalog.
+              Create and manage projects.
             </p>
           </div>
         </div>
+        <ProjectsTable data={projects} search={search} navigate={navigate} />
       </Main>
     </>
   )
