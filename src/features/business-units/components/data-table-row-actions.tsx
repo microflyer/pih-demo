@@ -1,5 +1,5 @@
 import { type Row } from '@tanstack/react-table'
-import { Edit, Trash2 } from 'lucide-react'
+import { Edit, MoreHorizontal, Trash2 } from 'lucide-react'
 import type { BusinessUnit } from '@/entity-types/business-unit'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,6 +29,7 @@ export function DataTableRowActions<TData>({
           variant='ghost'
           className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
         >
+          <MoreHorizontal className='h-4 w-4' />
           <span className='sr-only'>Open menu</span>
         </Button>
       </DropdownMenuTrigger>
