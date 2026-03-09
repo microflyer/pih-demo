@@ -1,13 +1,13 @@
 import {
   AudioWaveform,
   Bell,
+  Briefcase,
   Bug,
   Calendar,
   Clock,
   Command,
   Construction,
   FileX,
-  Folder,
   GalleryVerticalEnd,
   LayoutDashboard,
   Lock,
@@ -61,7 +61,7 @@ export const sidebarData: SidebarData = {
         {
           title: 'Projects',
           url: '/projects',
-          icon: Folder,
+          icon: Briefcase,
         },
         {
           title: 'Time Entries',
