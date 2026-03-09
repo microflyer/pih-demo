@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { Info } from 'lucide-react'
 import { accounts } from '@/entity-data/accounts'
 import { businessUnits } from '@/entity-data/business-units'
 import { Badge } from '@/components/ui/badge'
@@ -182,7 +183,8 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
             {/* Project Summary Card */}
             <Card>
               <CardHeader className='pb-3'>
-                <CardTitle className='text-base font-semibold'>
+                <CardTitle className='flex items-center gap-2 text-base font-semibold'>
+                  <Info className='h-4 w-4' />
                   Project Overview
                 </CardTitle>
               </CardHeader>
