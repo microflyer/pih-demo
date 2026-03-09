@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,11 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
@@ -22,6 +28,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useTimeEntries } from './time-entries-provider'
 import { themes } from '@/entity-data/themes'
 import type { TimeEntry } from '@/entity-types/time-entry'
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
 
 interface TimeEntryDialogProps {
   open: boolean
@@ -32,7 +40,7 @@ interface TimeEntryDialogProps {
 function getDefaultValues(editEntry: TimeEntry | null | undefined) {
   if (editEntry) {
     return {
-      date: editEntry.date,
+      date: new Date(editEntry.date),
       hasProject: editEntry.has_project,
       projectId: editEntry.project_id ?? '',
       themeId: editEntry.theme_id ?? '',
@@ -42,7 +50,7 @@ function getDefaultValues(editEntry: TimeEntry | null | undefined) {
     }
   }
   return {
-    date: new Date().toISOString().split('T')[0],
+    date: new Date(),
     hasProject: true,
     projectId: '',
     themeId: '',
@@ -79,6 +87,9 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
   // Get activities based on theme
   const activities = themeActivities.filter((a) => a.theme_id === themeId)
 
+  // Filter themes based on hasProject
+  const availableThemes = hasProject ? themes : themes.filter((t) => t.type === 'non_project')
+
   // Get project theme when project is selected
   const selectedProject = projects.find((p) => p.id === projectId)
 
@@ -87,8 +98,10 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
 
     if (!date || !activity || !hours) return
 
+    const dateString = format(date, 'yyyy-MM-dd')
+
     const entryData = {
-      date,
+      date: dateString,
       has_project: hasProject,
       project_id: hasProject ? projectId : null,
       theme_id: hasProject ? (selectedProject?.theme_id ?? null) : themeId || null,
@@ -126,14 +139,26 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
               <Label htmlFor="date" className="text-right">
                 Date *
               </Label>
-              <Input
-                id="date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="col-span-3"
-                required
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="date"
+                    variant={'outline'}
+                    className="col-span-3 w-full justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(selected) => selected && setDate(selected)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
             {/* has_project - Checkbox */}
@@ -158,7 +183,7 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
                   Project *
                 </Label>
                 <Select value={projectId} onValueChange={setProjectId} required={hasProject}>
-                  <SelectTrigger className="col-span-3">
+                  <SelectTrigger className="col-span-3 w-full">
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
@@ -182,11 +207,11 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
                 onValueChange={setThemeId}
                 disabled={hasProject}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3 w-full">
                   <SelectValue placeholder="Select theme" />
                 </SelectTrigger>
                 <SelectContent>
-                  {themes.map((t) => (
+                  {availableThemes.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
                       {t.name}
                     </SelectItem>
@@ -201,7 +226,7 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
                 Activity *
               </Label>
               <Select value={activity} onValueChange={setActivity} required>
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3 w-full">
                   <SelectValue placeholder="Select activity" />
                 </SelectTrigger>
                 <SelectContent>
