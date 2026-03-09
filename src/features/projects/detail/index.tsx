@@ -181,7 +181,7 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
           {/* Sidebar */}
           <div className='space-y-4'>
             {/* Project Summary Card */}
-            <Card>
+            <Card className='shadow-sm'>
               <CardHeader className='pb-3'>
                 <CardTitle className='flex items-center gap-2 text-base font-semibold'>
                   <Info className='h-4 w-4' />
