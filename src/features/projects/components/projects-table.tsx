@@ -38,7 +38,7 @@ export function ProjectsTable({ data }: ProjectsTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 15,
+    pageSize: 10,
   })
 
   const table = useReactTable({
@@ -174,7 +174,7 @@ export function ProjectsTable({ data }: ProjectsTableProps) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} className='mt-auto' />
+      <DataTablePagination table={table} />
     </div>
   )
 }

@@ -7,11 +7,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
+  type PaginationState,
 } from '@tanstack/react-table'
 import { useState } from 'react'
 import { useTimeEntries } from './time-entries-provider'
 import { timeEntriesColumns } from './time-entries-columns'
-import { Button } from '@/components/ui/button'
+import { DataTablePagination } from '@/components/data-table'
 import {
   Table,
   TableBody,
@@ -20,12 +21,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import type { TimeEntry } from '@/entity-types/time-entry'
 
 export function TimeEntriesTable() {
   const { filteredEntries, setOpenDialog, setEditEntry } = useTimeEntries()
   const [sorting, setSorting] = useState<SortingState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
 
   const handleEdit = (entry: TimeEntry) => {
     setEditEntry(entry)
@@ -39,8 +43,10 @@ export function TimeEntriesTable() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     state: {
       sorting,
+      pagination,
     },
   })
 
@@ -91,29 +97,7 @@ export function TimeEntriesTable() {
         </Table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-end space-x-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeftIcon className="h-4 w-4" />
-        </Button>
-        <span className="text-sm text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
-          {table.getPageCount()}
-        </span>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRightIcon className="h-4 w-4" />
-        </Button>
-      </div>
+      <DataTablePagination table={table} />
     </div>
   )
 }
