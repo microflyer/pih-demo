@@ -33,9 +33,9 @@ import {
 import { useProjects } from './projects-provider'
 
 const PROJECT_TYPES = [
-  { label: 'Delivery', value: 'Delivery' },
-  { label: 'Internal', value: 'Internal' },
-  { label: 'Proof of Concept', value: 'Proof of Concept' },
+  { label: 'Lean', value: 'Lean' },
+  { label: 'GB', value: 'GB' },
+  { label: 'BB', value: 'BB' },
 ] as const
 
 const createProjectSchema = z.object({

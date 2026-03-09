@@ -35,9 +35,9 @@ import {
 import { useProjects } from '@/features/projects/components/projects-provider'
 
 const PROJECT_TYPES = [
-  { label: 'Delivery', value: 'Delivery' },
-  { label: 'Internal', value: 'Internal' },
-  { label: 'Proof of Concept', value: 'Proof of Concept' },
+  { label: 'Lean', value: 'Lean' },
+  { label: 'GB', value: 'GB' },
+  { label: 'BB', value: 'BB' },
 ] as const
 
 const SERVICE_LINES = [
@@ -56,33 +56,39 @@ const PROCESSES = [
 ] as const
 
 const STAGES = [
-  { label: 'Discovery', value: 'Discovery' },
-  { label: 'Proposal', value: 'Proposal' },
-  { label: 'Execution', value: 'Execution' },
-  { label: 'Closed', value: 'Closed' },
+  { label: 'Define', value: 'Define' },
+  { label: 'Measure', value: 'Measure' },
+  { label: 'Analyze', value: 'Analyze' },
+  { label: 'Improve', value: 'Improve' },
+  { label: 'Control', value: 'Control' },
 ] as const
 
 const STATUSES = [
-  { label: 'Draft', value: 'Draft' },
-  { label: 'Planning', value: 'Planning' },
-  { label: 'Active', value: 'Active' },
-  { label: 'Completed', value: 'Completed' },
+  { label: 'As-Is Assessment', value: 'As-Is Assessment' },
+  { label: 'To-Be Design', value: 'To-Be Design' },
+  { label: 'SOP Creation', value: 'SOP Creation' },
+  { label: 'IT Setup', value: 'IT Setup' },
+  { label: 'Coding To Be Started', value: 'Coding To Be Started' },
+  { label: 'Coding', value: 'Coding' },
+  { label: 'UAT', value: 'UAT' },
+  { label: 'Deployed', value: 'Deployed' },
+  { label: 'To Be Started', value: 'To Be Started' },
+  { label: 'Dropped', value: 'Dropped' },
   { label: 'On Hold', value: 'On Hold' },
-  { label: 'Cancelled', value: 'Cancelled' },
 ] as const
 
 const SIGN_OFF_STATUSES = [
-  { label: 'Signed', value: 'Signed' },
   { label: 'Pending', value: 'Pending' },
-  { label: 'Not Required', value: 'Not Required' },
+  { label: 'Define Signed Off', value: 'Define Signed Off' },
+  { label: 'Final Signed Off', value: 'Final Signed Off' },
 ] as const
 
 const TECH_SOLUTIONS = [
-  { label: 'SAP', value: 'SAP' },
-  { label: 'Cloud', value: 'Cloud' },
-  { label: 'API', value: 'API' },
+  { label: 'Agentic AI', value: 'Agentic AI' },
+  { label: 'GenAI', value: 'GenAI' },
+  { label: 'Workflow', value: 'Workflow' },
   { label: 'RPA', value: 'RPA' },
-  { label: 'Custom', value: 'Custom' },
+  { label: 'QPA', value: 'QPA' },
 ] as const
 
 const createProjectSchema = z.object({
