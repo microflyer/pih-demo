@@ -91,7 +91,7 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
       date,
       has_project: hasProject,
       project_id: hasProject ? projectId : null,
-      theme_id: hasProject ? selectedProject?.theme_id : themeId,
+      theme_id: hasProject ? (selectedProject?.theme_id ?? null) : themeId || null,
       activity,
       hours: parseFloat(hours),
       comments: comments || null,
