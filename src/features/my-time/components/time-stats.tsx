@@ -29,7 +29,7 @@ export function TimeStats({ date }: TimeStatsProps) {
   const byProject = todayEntries.reduce((acc, entry) => {
     let name: string
     let key: string
-    let isProject = entry.has_project && !!entry.project_id
+    const isProject = entry.has_project && !!entry.project_id
 
     if (isProject && entry.project_id) {
       const project = projects.find((p) => p.id === entry.project_id)
