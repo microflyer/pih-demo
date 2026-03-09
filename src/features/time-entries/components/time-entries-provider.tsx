@@ -18,6 +18,8 @@ interface TimeEntriesContextType {
   filteredEntries: TimeEntry[]
   filters: TimeEntriesFilters
   setFilters: (filters: TimeEntriesFilters) => void
+  openDialog: boolean
+  setOpenDialog: (open: boolean) => void
   addTimeEntry: (entry: Omit<TimeEntry, 'id'>) => void
   updateTimeEntry: (id: string, entry: Partial<TimeEntry>) => void
   deleteTimeEntry: (id: string) => void
@@ -35,6 +37,7 @@ export function TimeEntriesProvider({ children }: { children: ReactNode }) {
     projectId: null,
     hasProject: null,
   })
+  const [openDialog, setOpenDialog] = useState(false)
 
   const filteredEntries = useMemo(() => {
     return timeEntries.filter((entry) => {
@@ -83,6 +86,8 @@ export function TimeEntriesProvider({ children }: { children: ReactNode }) {
         filteredEntries,
         filters,
         setFilters,
+        openDialog,
+        setOpenDialog,
         addTimeEntry,
         updateTimeEntry,
         deleteTimeEntry,
