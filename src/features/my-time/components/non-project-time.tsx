@@ -113,7 +113,9 @@ export function NonProjectTime({ date }: NonProjectTimeProps) {
                           )}
                         </div>
                         <div className="flex items-center gap-2 ml-auto">
-                          <span className="text-xs font-semibold tabular-nums">{entry.hours}h</span>
+                          <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold tabular-nums text-primary">
+                            {entry.hours}h
+                          </span>
                           <Button
                             size="sm"
                             variant="ghost"

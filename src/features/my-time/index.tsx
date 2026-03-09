@@ -119,7 +119,7 @@ function MyTimeContent() {
         <TimeStats date={dateString} />
 
         {/* Projects Section */}
-        <div className="rounded-lg bg-muted/40 p-3">
+        <div className="rounded-lg bg-muted/60 p-3">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1 mb-2">
             Projects
           </div>
@@ -137,7 +137,7 @@ function MyTimeContent() {
         </div>
 
         {/* Non-Project Section */}
-        <div className="rounded-lg bg-muted/40 p-3">
+        <div className="rounded-lg bg-muted/60 p-3">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1 mb-2">
             Non-Projects
           </div>
