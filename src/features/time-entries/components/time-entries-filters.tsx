@@ -58,13 +58,13 @@ export function TimeEntriesFilters() {
         </Label>
         <Select
           value={filters.projectId ?? ''}
-          onValueChange={(value) => updateFilter('projectId', value || null)}
+          onValueChange={(value) => updateFilter('projectId', value === 'all' ? null : value)}
         >
           <SelectTrigger className="w-48">
             <SelectValue placeholder="All projects" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All projects</SelectItem>
+            <SelectItem value="all">All projects</SelectItem>
             {projects.map((p) => (
               <SelectItem key={p.id} value={p.id}>
                 {p.name}
