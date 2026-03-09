@@ -6,4 +6,5 @@ export interface TimeEntry {
   theme_id: string | null
   has_project: boolean
   project_id: string | null
+  date: string // YYYY-MM-DD format
 }
