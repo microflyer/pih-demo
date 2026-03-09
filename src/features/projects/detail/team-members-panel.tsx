@@ -77,7 +77,7 @@ export function TeamMembersPanel({
             {teamUsers.map((user) => (
               <div
                 key={user.id}
-                className='group flex items-center justify-between rounded-lg border bg-card p-2.5 transition-all duration-200 hover:border-emerald-300 hover:shadow-sm dark:hover:border-emerald-700'
+                className='group flex items-center justify-between rounded-lg border bg-card p-2.5 transition-all duration-200 hover:border-emerald-500/30 dark:hover:border-emerald-700/40'
               >
                 <div className='flex items-center gap-3'>
                   <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-500/20 to-gray-500/20 text-sm font-semibold text-slate-700 ring-1 ring-border dark:from-slate-500/30 dark:to-gray-500/30 dark:text-slate-400'>

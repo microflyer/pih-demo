@@ -238,7 +238,7 @@ function CardSection({
   icon?: React.ReactNode
 }) {
   return (
-    <Card className='shadow-sm'>
+    <Card className='shadow-none'>
       <CardHeader className='pb-2'>
         <CardTitle className='flex items-center gap-2 text-base font-semibold'>
           {icon}
@@ -344,7 +344,7 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 rounded-xl border border-border/50 bg-muted/30 p-6 shadow-sm'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 rounded-xl border border-border/50 bg-muted/30 p-6 shadow-none'>
         {/* Basic Info */}
         <div>
           <CardSection
