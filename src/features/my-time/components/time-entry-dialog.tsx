@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -41,14 +41,6 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
   const [hours, setHours] = useState('')
   const [comments, setComments] = useState('')
 
-  useEffect(() => {
-    if (open) {
-      setActivity('')
-      setHours('')
-      setComments('')
-    }
-  }, [open])
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -64,11 +56,25 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
       date,
     })
 
+    // Reset form
+    setActivity('')
+    setHours('')
+    setComments('')
     onOpenChange(false)
   }
 
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      // Reset form when closing
+      setActivity('')
+      setHours('')
+      setComments('')
+    }
+    onOpenChange(isOpen)
+  }
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Log Time - {project.name}</DialogTitle>
