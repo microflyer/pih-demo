@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import {
+  type PaginationState,
   type SortingState,
   type VisibilityState,
   type ColumnFiltersState,
@@ -35,16 +36,17 @@ export function ProjectsTable({ data }: ProjectsTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
+  })
 
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
-      pagination: {
-        pageIndex: 0,
-        pageSize: 15,
-      },
+      pagination,
       rowSelection,
       columnFilters,
       columnVisibility,
@@ -54,6 +56,7 @@ export function ProjectsTable({ data }: ProjectsTableProps) {
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
