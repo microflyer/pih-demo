@@ -119,27 +119,31 @@ function MyTimeContent() {
         <TimeStats date={dateString} />
 
         {/* Projects Section */}
-        <div className="rounded-lg bg-muted/40 p-3 space-y-2">
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+        <div className="rounded-lg bg-muted/40 p-3">
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1 mb-2">
             Projects
           </div>
-          {projects.map((project) => (
-            <ProjectTimeItem
-              key={project.id}
-              project={project}
-              date={dateString}
-              isOpen={isProjectExpanded(project.id)}
-              onOpenChange={(open) => handleProjectToggle(project.id, open)}
-            />
-          ))}
+          <div className="rounded-md bg-card p-2 space-y-2">
+            {projects.map((project) => (
+              <ProjectTimeItem
+                key={project.id}
+                project={project}
+                date={dateString}
+                isOpen={isProjectExpanded(project.id)}
+                onOpenChange={(open) => handleProjectToggle(project.id, open)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Non-Project Section */}
-        <div className="rounded-lg bg-muted/40 p-3 space-y-2">
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+        <div className="rounded-lg bg-muted/40 p-3">
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1 mb-2">
             Non-Projects
           </div>
-          <NonProjectTime date={dateString} />
+          <div className="rounded-md bg-card p-2">
+            <NonProjectTime date={dateString} />
+          </div>
         </div>
       </Main>
     </>
