@@ -14,12 +14,17 @@ import type { Project } from '@/entity-types/project'
 interface ProjectTimeItemProps {
   project: Project
   date: string
+  isOpen?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
-export function ProjectTimeItem({ project, date }: ProjectTimeItemProps) {
+export function ProjectTimeItem({ project, date, isOpen: controlledIsOpen, onOpenChange }: ProjectTimeItemProps) {
   const { timeEntries, deleteTimeEntry } = useMyTime()
-  const [isOpen, setIsOpen] = useState(true)
+  const [internalIsOpen, setInternalIsOpen] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen
+  const setIsOpen = onOpenChange ? (open: boolean) => onOpenChange(open) : setInternalIsOpen
 
   const projectEntries = timeEntries.filter(
     (e) => e.project_id === project.id && e.date === date
