@@ -9,7 +9,7 @@ import { teams } from '@/entity-data/teams'
 import { themes } from '@/entity-data/themes'
 import { users } from '@/entity-data/users'
 import type { Project } from '@/entity-types/project'
-import { ChevronDown, ChevronRight, Save } from 'lucide-react'
+import { ChevronDown, ChevronRight, Save, Info, Wrench, Users, Flag, DollarSign, Clock, TrendingUp, Calendar, Link2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -152,11 +152,14 @@ function NumberField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+            {label}
+          </FormLabel>
           <FormControl>
             <Input
               type='number'
               placeholder={placeholder ?? '0'}
+              className='mt-1.5'
               value={field.value != null ? String(field.value) : ''}
               onChange={(e) => {
                 const val = e.target.value
@@ -190,13 +193,15 @@ function SelectField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+            {label}
+          </FormLabel>
           <Select
             onValueChange={(v) => field.onChange(v || undefined)}
             value={(field.value as string) ?? ''}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className='mt-1.5'>
                 <SelectValue placeholder={placeholder ?? 'Select...'} />
               </SelectTrigger>
             </FormControl>
@@ -219,10 +224,12 @@ function CollapsibleSection({
   title,
   defaultOpen,
   children,
+  icon,
 }: {
   title: string
   defaultOpen?: boolean
   children: React.ReactNode
+  icon?: React.ReactNode
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false)
 
@@ -231,9 +238,12 @@ function CollapsibleSection({
       <CollapsibleTrigger asChild>
         <Button
           variant='ghost'
-          className='flex w-full cursor-pointer justify-between px-4 py-3 font-semibold text-foreground transition-colors hover:bg-muted/50'
+          className='flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50'
         >
-          <span>{title}</span>
+          <span className='flex items-center gap-2'>
+            {icon}
+            {title}
+          </span>
           {isOpen ? (
             <ChevronDown className='h-4 w-4 text-muted-foreground' />
           ) : (
@@ -342,19 +352,29 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
         {/* Basic Info */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Basic Info' defaultOpen={true}>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Basic Information'
+            defaultOpen={true}
+            icon={<Info className='h-4 w-4 text-emerald-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='name'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name *</FormLabel>
+                  <FormItem className='sm:col-span-2'>
+                    <FormLabel className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                      Project Name *
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder='Project name' {...field} />
+                      <Input
+                        placeholder='Enter project name'
+                        className='mt-1.5'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -386,9 +406,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Technical */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Technical'>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Technical Details'
+            icon={<Wrench className='h-4 w-4 text-blue-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <SelectField
                 control={form.control}
                 name='tech_solution'
@@ -413,9 +436,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Team */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Team'>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Team Members'
+            icon={<Users className='h-4 w-4 text-violet-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='ops_mentor'
@@ -423,7 +449,7 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                   <FormItem>
                     <FormLabel>Ops Mentor</FormLabel>
                     <FormControl>
-                      <Input placeholder='Name' {...field} />
+                      <Input placeholder='Enter name' {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -435,7 +461,7 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                   <FormItem>
                     <FormLabel>SDL Name</FormLabel>
                     <FormControl>
-                      <Input placeholder='Name' {...field} />
+                      <Input placeholder='Enter name' {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -459,9 +485,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Status */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Status'>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Project Status'
+            icon={<Flag className='h-4 w-4 text-amber-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <SelectField
                 control={form.control}
                 name='stage'
@@ -483,7 +512,7 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                   <FormItem>
                     <FormLabel>Status Reason</FormLabel>
                     <FormControl>
-                      <Input placeholder='Reason' {...field} />
+                      <Input placeholder='Enter reason' {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -500,68 +529,88 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Financial */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Financial'>
-            <div className='grid gap-4 md:grid-cols-2'>
-              <FormField
-                control={form.control}
-                name='is_billiable'
-                render={({ field }) => (
-                  <FormItem className='flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4'>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value ?? false}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>Billable</FormLabel>
-                      <FormDescription>
-                        This project charges clients for time
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='is_external'
-                render={({ field }) => (
-                  <FormItem className='flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4'>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value ?? false}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel>External</FormLabel>
-                      <FormDescription>
-                        This is an external client project
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <NumberField control={form.control} name='cost' label='Cost' />
-              <NumberField
-                control={form.control}
-                name='revenue'
-                label='Revenue'
-              />
-              <NumberField
-                control={form.control}
-                name='one_time_cost'
-                label='One-time Cost'
-              />
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Financial'
+            icon={<DollarSign className='h-4 w-4 text-green-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
+              <div className='space-y-4'>
+                <FormField
+                  control={form.control}
+                  name='is_billiable'
+                  render={({ field }) => (
+                    <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
+                      <div className='space-y-0.5'>
+                        <FormLabel className='text-sm font-medium'>
+                          Billable
+                        </FormLabel>
+                        <FormDescription className='text-xs'>
+                          Project charges clients for time
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value ?? false}
+                          onCheckedChange={field.onChange}
+                          className='ml-2'
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='is_external'
+                  render={({ field }) => (
+                    <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
+                      <div className='space-y-0.5'>
+                        <FormLabel className='text-sm font-medium'>
+                          External
+                        </FormLabel>
+                        <FormDescription className='text-xs'>
+                          External client project
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value ?? false}
+                          onCheckedChange={field.onChange}
+                          className='ml-2'
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='space-y-4'>
+                <NumberField
+                  control={form.control}
+                  name='cost'
+                  label='Cost ($)'
+                />
+                <NumberField
+                  control={form.control}
+                  name='revenue'
+                  label='Revenue ($)'
+                />
+                <NumberField
+                  control={form.control}
+                  name='one_time_cost'
+                  label='One-time Cost ($)'
+                />
+              </div>
             </div>
           </CollapsibleSection>
         </div>
 
         {/* Hours */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Hours'>
-            <div className='grid gap-4 md:grid-cols-3'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Hours Tracking'
+            icon={<Clock className='h-4 w-4 text-cyan-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-3'>
               <NumberField
                 control={form.control}
                 name='estimated_hours'
@@ -582,9 +631,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* FTE & Impact */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='FTE & Impact'>
-            <div className='grid gap-4 md:grid-cols-3'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='FTE & Impact'
+            icon={<TrendingUp className='h-4 w-4 text-rose-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
               <NumberField
                 control={form.control}
                 name='potential_fte_saving'
@@ -608,16 +660,19 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
               <NumberField
                 control={form.control}
                 name='business_impact'
-                label='Business Impact'
+                label='Business Impact ($)'
               />
             </div>
           </CollapsibleSection>
         </div>
 
         {/* Dates */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Dates'>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Project Timeline'
+            icon={<Calendar className='h-4 w-4 text-orange-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='start_date'
@@ -647,15 +702,21 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Relations */}
-        <div className='rounded-md border'>
-          <CollapsibleSection title='Relations' defaultOpen={true}>
-            <div className='grid gap-4 md:grid-cols-2'>
+        <div className='rounded-lg border bg-card'>
+          <CollapsibleSection
+            title='Relationships'
+            defaultOpen={true}
+            icon={<Link2 className='h-4 w-4 text-indigo-600' />}
+          >
+            <div className='grid gap-4 sm:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='business_unit_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Business Unit *</FormLabel>
+                    <FormLabel className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                      Business Unit *
+                    </FormLabel>
                     <Select
                       onValueChange={(v) => {
                         field.onChange(v)
@@ -664,7 +725,7 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                       value={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className='mt-1.5'>
                           <SelectValue placeholder='Select business unit' />
                         </SelectTrigger>
                       </FormControl>
@@ -685,14 +746,16 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                 name='account_id'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Account *</FormLabel>
+                    <FormLabel className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                      Account *
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       value={field.value}
                       disabled={!selectedBuId}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className='mt-1.5'>
                           <SelectValue placeholder='Select account' />
                         </SelectTrigger>
                       </FormControl>
@@ -720,15 +783,16 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
         </div>
 
         {/* Save Button */}
-        <div className='flex justify-end gap-2'>
+        <div className='flex justify-end gap-3 pt-2'>
           <Button
             type='button'
             variant='outline'
             onClick={() => navigate({ to: '/projects' })}
+            className='cursor-pointer'
           >
             Cancel
           </Button>
-          <Button type='submit'>
+          <Button type='submit' className='cursor-pointer'>
             <Save className='mr-2 h-4 w-4' />
             Save Changes
           </Button>
