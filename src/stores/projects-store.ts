@@ -6,6 +6,15 @@ import type { Project } from '@/entity-types/project'
 import type { Team } from '@/entity-types/team'
 import { create } from 'zustand'
 
+export function nextProjectId(projects: Project[]): string {
+  const nums = projects
+    .map((p) => p.id.replace(/^proj-/, ''))
+    .filter((s) => /^\d+$/.test(s))
+    .map(Number)
+  const max = nums.length ? Math.max(...nums) : 0
+  return `proj-${String(max + 1).padStart(3, '0')}`
+}
+
 function nextTeamId(teams: Team[]): string {
   const nums = teams
     .map((t) => t.id.replace(/^team-/, ''))

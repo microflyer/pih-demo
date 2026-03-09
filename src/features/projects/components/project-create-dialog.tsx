@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useProjects } from './projects-provider'
+import { nextProjectId } from '@/stores/projects-store'
 
 const PROJECT_TYPES = [
   { label: 'Lean', value: 'Lean' },
@@ -57,7 +58,7 @@ export function ProjectCreateDialog({
   onOpenChange,
 }: ProjectCreateDialogProps) {
   const navigate = useNavigate()
-  const { addProject, setOpenDialog } = useProjects()
+  const { addProject, setOpenDialog, projects } = useProjects()
 
   const form = useForm<CreateProjectForm>({
     resolver: zodResolver(createProjectSchema),
@@ -82,7 +83,7 @@ export function ProjectCreateDialog({
   }
 
   function onSubmit(data: CreateProjectForm) {
-    const id = crypto.randomUUID()
+    const id = nextProjectId(projects)
     const project: Project = {
       id,
       name: data.name,
@@ -166,7 +167,7 @@ export function ProjectCreateDialog({
                     value={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className='w-full'>
                         <SelectValue placeholder='Select business unit' />
                       </SelectTrigger>
                     </FormControl>
@@ -194,7 +195,7 @@ export function ProjectCreateDialog({
                     disabled={!selectedBuId}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className='w-full'>
                         <SelectValue placeholder='Select account' />
                       </SelectTrigger>
                     </FormControl>
@@ -218,7 +219,7 @@ export function ProjectCreateDialog({
                   <FormLabel>Project Type</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className='w-full'>
                         <SelectValue placeholder='Select type' />
                       </SelectTrigger>
                     </FormControl>
