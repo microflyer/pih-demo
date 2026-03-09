@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ClerkRouteRouteImport } from './routes/clerk/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedMyTimeRouteImport } from './routes/_authenticated/my-time'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -54,6 +55,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyTimeRoute = AuthenticatedMyTimeRouteImport.update({
+  id: '/my-time',
+  path: '/my-time',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -224,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/my-time': typeof AuthenticatedMyTimeRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -254,6 +261,7 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/my-time': typeof AuthenticatedMyTimeRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/_authenticated/my-time': typeof AuthenticatedMyTimeRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -322,6 +331,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/my-time'
     | '/'
     | '/errors/$error'
     | '/projects/$projectId'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/my-time'
     | '/'
     | '/errors/$error'
     | '/projects/$projectId'
@@ -386,6 +397,7 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/_authenticated/my-time'
     | '/_authenticated/'
     | '/_authenticated/errors/$error'
     | '/_authenticated/projects/$projectId'
@@ -441,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-time': {
+      id: '/_authenticated/my-time'
+      path: '/my-time'
+      fullPath: '/my-time'
+      preLoaderRoute: typeof AuthenticatedMyTimeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(errors)/503': {
@@ -674,6 +693,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedMyTimeRoute: typeof AuthenticatedMyTimeRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedProjectsProjectIdRoute: typeof AuthenticatedProjectsProjectIdRoute
@@ -687,6 +707,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedMyTimeRoute: AuthenticatedMyTimeRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedProjectsProjectIdRoute: AuthenticatedProjectsProjectIdRoute,
