@@ -38,23 +38,23 @@ export function ProjectTimeItem({ project, date }: ProjectTimeItemProps) {
         date={date}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="border rounded-lg mb-2">
+        <div className="border rounded-md mb-1.5">
           <CollapsibleTrigger asChild>
-            <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-muted/50 rounded-t-lg">
+            <div className="flex items-center justify-between px-2.5 py-1.5 cursor-pointer hover:bg-muted/50 rounded-t-md">
               <div className="flex items-center gap-2">
                 {isOpen ? (
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="h-3.5 w-3.5" />
                 ) : (
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-3.5 w-3.5" />
                 )}
-                <span className="font-medium">{project.name}</span>
+                <span className="text-sm font-medium">{project.name}</span>
                 {theme && (
-                  <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                  <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                     {theme.name}
                   </span>
                 )}
                 {totalHours > 0 && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-[10px] text-muted-foreground">
                     ({totalHours.toFixed(1)}h)
                   </span>
                 )}
@@ -62,42 +62,43 @@ export function ProjectTimeItem({ project, date }: ProjectTimeItemProps) {
               <Button
                 size="sm"
                 variant="ghost"
+                className="h-6 text-xs px-2"
                 onClick={(e) => {
                   e.stopPropagation()
                   setDialogOpen(true)
                 }}
               >
-                <Plus className="h-4 w-4 mr-1" />
-                Add Time
+                <Plus className="h-3 w-3 mr-1" />
+                Add
               </Button>
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <div className="px-3 pb-3 space-y-2">
+            <div className="px-2.5 pb-2 space-y-1">
               {projectEntries.length === 0 ? (
-                <p className="text-sm text-muted-foreground pl-6">
-                  No time logged for this date
+                <p className="text-xs text-muted-foreground pl-5">
+                  No time logged
                 </p>
               ) : (
                 projectEntries.map((entry) => (
                   <div
                     key={entry.id}
-                    className="flex items-center justify-between pl-6 py-2 bg-muted/30 rounded"
+                    className="flex items-center justify-between pl-5 py-1.5 bg-muted/30 rounded"
                   >
-                    <div className="flex-1">
-                      <div className="text-sm">{entry.activity}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs truncate">{entry.activity}</div>
                       {entry.comments && (
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-[10px] text-muted-foreground truncate">
                           {entry.comments}
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-medium">{entry.hours}h</span>
+                    <div className="flex items-center gap-2 ml-2">
+                      <span className="text-xs font-medium">{entry.hours}h</span>
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-6 w-6 p-0"
+                        className="h-5 w-5 p-0"
                         onClick={() => deleteTimeEntry(entry.id)}
                       >
                         <Trash2 className="h-3 w-3" />
