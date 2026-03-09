@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { ConfigDrawer } from '@/components/config-drawer'
+import { ProjectDetailForm } from './project-detail-form'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
@@ -59,10 +60,11 @@ export function ProjectDetail({ projectId }: ProjectDetailProps) {
               {project.name}
             </h2>
             <p className='text-muted-foreground'>
-              Project details and edit form will be here.
+              Edit project details below and save.
             </p>
           </div>
         </div>
+        <ProjectDetailForm project={project} />
       </Main>
     </>
   )

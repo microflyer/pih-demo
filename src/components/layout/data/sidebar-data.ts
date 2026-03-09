@@ -59,7 +59,7 @@ export const sidebarData: SidebarData = {
         },
         {
           title: 'Projects',
-          url: '/projects',
+          url: '/projects/',
           icon: Folder,
         },
       ],

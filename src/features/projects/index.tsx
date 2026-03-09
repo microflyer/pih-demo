@@ -5,7 +5,10 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { toast } from 'sonner'
 import { ProjectCreateDialog } from './components/project-create-dialog'
+import { ProjectDeleteDialog } from './components/project-delete-dialog'
+import { ProjectMembersDrawer } from './components/project-members-drawer'
 import { ProjectsPrimaryButtons } from './components/projects-primary-buttons'
 import { ProjectsProvider, useProjects } from './components/projects-provider'
 import { ProjectsTable } from './components/projects-table'
@@ -13,7 +16,14 @@ import { ProjectsTable } from './components/projects-table'
 const route = getRouteApi('/_authenticated/projects/')
 
 function ProjectsContent() {
-  const { projects, openDialog, setOpenDialog } = useProjects()
+  const {
+    projects,
+    openDialog,
+    setOpenDialog,
+    currentProject,
+    setCurrentProject,
+    removeProject,
+  } = useProjects()
   const search = route.useSearch()
   const navigate = route.useNavigate()
 
@@ -22,8 +32,32 @@ function ProjectsContent() {
       <ProjectCreateDialog
         open={openDialog === 'create'}
         onOpenChange={(open) => {
-          if (!open) setOpenDialog('create')
+          if (!open) setOpenDialog(null)
         }}
+      />
+      <ProjectDeleteDialog
+        open={openDialog === 'delete'}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpenDialog(null)
+            setCurrentProject(null)
+          }
+        }}
+        project={currentProject}
+        onConfirm={(projectId) => {
+          removeProject(projectId)
+          toast.success('Project deleted')
+        }}
+      />
+      <ProjectMembersDrawer
+        open={openDialog === 'members'}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpenDialog(null)
+            setCurrentProject(null)
+          }
+        }}
+        project={currentProject}
       />
       <Header fixed>
         <Search />
