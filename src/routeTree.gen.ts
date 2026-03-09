@@ -13,7 +13,11 @@ import { Route as ClerkRouteRouteImport } from './routes/clerk/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedTimeEntriesRouteImport } from './routes/_authenticated/time-entries'
+import { Route as AuthenticatedThemesRouteImport } from './routes/_authenticated/themes'
+import { Route as AuthenticatedThemeActivitiesRouteImport } from './routes/_authenticated/theme-activities'
 import { Route as AuthenticatedMyTimeRouteImport } from './routes/_authenticated/my-time'
+import { Route as AuthenticatedBusinessUnitsRouteImport } from './routes/_authenticated/business-units'
+import { Route as AuthenticatedAccountsRouteImport } from './routes/_authenticated/accounts'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -64,9 +68,31 @@ const AuthenticatedTimeEntriesRoute =
     path: '/time-entries',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedThemesRoute = AuthenticatedThemesRouteImport.update({
+  id: '/themes',
+  path: '/themes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedThemeActivitiesRoute =
+  AuthenticatedThemeActivitiesRouteImport.update({
+    id: '/theme-activities',
+    path: '/theme-activities',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMyTimeRoute = AuthenticatedMyTimeRouteImport.update({
   id: '/my-time',
   path: '/my-time',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBusinessUnitsRoute =
+  AuthenticatedBusinessUnitsRouteImport.update({
+    id: '/business-units',
+    path: '/business-units',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAccountsRoute = AuthenticatedAccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -237,7 +263,11 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/accounts': typeof AuthenticatedAccountsRoute
+  '/business-units': typeof AuthenticatedBusinessUnitsRoute
   '/my-time': typeof AuthenticatedMyTimeRoute
+  '/theme-activities': typeof AuthenticatedThemeActivitiesRoute
+  '/themes': typeof AuthenticatedThemesRoute
   '/time-entries': typeof AuthenticatedTimeEntriesRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -269,7 +299,11 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/accounts': typeof AuthenticatedAccountsRoute
+  '/business-units': typeof AuthenticatedBusinessUnitsRoute
   '/my-time': typeof AuthenticatedMyTimeRoute
+  '/theme-activities': typeof AuthenticatedThemeActivitiesRoute
+  '/themes': typeof AuthenticatedThemesRoute
   '/time-entries': typeof AuthenticatedTimeEntriesRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -306,7 +340,11 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/_authenticated/accounts': typeof AuthenticatedAccountsRoute
+  '/_authenticated/business-units': typeof AuthenticatedBusinessUnitsRoute
   '/_authenticated/my-time': typeof AuthenticatedMyTimeRoute
+  '/_authenticated/theme-activities': typeof AuthenticatedThemeActivitiesRoute
+  '/_authenticated/themes': typeof AuthenticatedThemesRoute
   '/_authenticated/time-entries': typeof AuthenticatedTimeEntriesRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -341,7 +379,11 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/accounts'
+    | '/business-units'
     | '/my-time'
+    | '/theme-activities'
+    | '/themes'
     | '/time-entries'
     | '/'
     | '/errors/$error'
@@ -373,7 +415,11 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/accounts'
+    | '/business-units'
     | '/my-time'
+    | '/theme-activities'
+    | '/themes'
     | '/time-entries'
     | '/'
     | '/errors/$error'
@@ -409,7 +455,11 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/_authenticated/accounts'
+    | '/_authenticated/business-units'
     | '/_authenticated/my-time'
+    | '/_authenticated/theme-activities'
+    | '/_authenticated/themes'
     | '/_authenticated/time-entries'
     | '/_authenticated/'
     | '/_authenticated/errors/$error'
@@ -475,11 +525,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTimeEntriesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/themes': {
+      id: '/_authenticated/themes'
+      path: '/themes'
+      fullPath: '/themes'
+      preLoaderRoute: typeof AuthenticatedThemesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/theme-activities': {
+      id: '/_authenticated/theme-activities'
+      path: '/theme-activities'
+      fullPath: '/theme-activities'
+      preLoaderRoute: typeof AuthenticatedThemeActivitiesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my-time': {
       id: '/_authenticated/my-time'
       path: '/my-time'
       fullPath: '/my-time'
       preLoaderRoute: typeof AuthenticatedMyTimeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/business-units': {
+      id: '/_authenticated/business-units'
+      path: '/business-units'
+      fullPath: '/business-units'
+      preLoaderRoute: typeof AuthenticatedBusinessUnitsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/accounts': {
+      id: '/_authenticated/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AuthenticatedAccountsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(errors)/503': {
@@ -713,7 +791,11 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedAccountsRoute: typeof AuthenticatedAccountsRoute
+  AuthenticatedBusinessUnitsRoute: typeof AuthenticatedBusinessUnitsRoute
   AuthenticatedMyTimeRoute: typeof AuthenticatedMyTimeRoute
+  AuthenticatedThemeActivitiesRoute: typeof AuthenticatedThemeActivitiesRoute
+  AuthenticatedThemesRoute: typeof AuthenticatedThemesRoute
   AuthenticatedTimeEntriesRoute: typeof AuthenticatedTimeEntriesRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
@@ -728,7 +810,11 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedAccountsRoute: AuthenticatedAccountsRoute,
+  AuthenticatedBusinessUnitsRoute: AuthenticatedBusinessUnitsRoute,
   AuthenticatedMyTimeRoute: AuthenticatedMyTimeRoute,
+  AuthenticatedThemeActivitiesRoute: AuthenticatedThemeActivitiesRoute,
+  AuthenticatedThemesRoute: AuthenticatedThemesRoute,
   AuthenticatedTimeEntriesRoute: AuthenticatedTimeEntriesRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,

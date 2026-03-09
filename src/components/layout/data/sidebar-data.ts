@@ -1,22 +1,19 @@
 import {
+  Activity,
   AudioWaveform,
   Bell,
   Briefcase,
-  Bug,
+  Building2,
   Calendar,
   Clock,
   Command,
-  Construction,
-  FileX,
   GalleryVerticalEnd,
   LayoutDashboard,
-  Lock,
   Monitor,
   Palette,
-  ServerOff,
   Settings,
   UserCog,
-  UserX,
+  Wallet,
   Wrench,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
@@ -71,38 +68,27 @@ export const sidebarData: SidebarData = {
       ],
     },
     {
-      title: 'Pages',
+      title: 'Data',
       items: [
         {
-          title: 'Errors',
-          icon: Bug,
-          items: [
-            {
-              title: 'Unauthorized',
-              url: '/errors/unauthorized',
-              icon: Lock,
-            },
-            {
-              title: 'Forbidden',
-              url: '/errors/forbidden',
-              icon: UserX,
-            },
-            {
-              title: 'Not Found',
-              url: '/errors/not-found',
-              icon: FileX,
-            },
-            {
-              title: 'Internal Server Error',
-              url: '/errors/internal-server-error',
-              icon: ServerOff,
-            },
-            {
-              title: 'Maintenance Error',
-              url: '/errors/maintenance-error',
-              icon: Construction,
-            },
-          ],
+          title: 'Business Units',
+          url: '/business-units',
+          icon: Building2,
+        },
+        {
+          title: 'Accounts',
+          url: '/accounts',
+          icon: Wallet,
+        },
+        {
+          title: 'Themes',
+          url: '/themes',
+          icon: Palette,
+        },
+        {
+          title: 'Theme Activities',
+          url: '/theme-activities',
+          icon: Activity,
         },
       ],
     },
