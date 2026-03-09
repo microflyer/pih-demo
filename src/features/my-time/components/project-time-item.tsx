@@ -43,7 +43,7 @@ export function ProjectTimeItem({ project, date, isOpen: controlledIsOpen, onOpe
         date={date}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="border rounded-md mb-1.5">
+        <div className="rounded-md mb-1.5">
           <CollapsibleTrigger asChild>
             <div className="flex items-center justify-between px-2.5 py-1.5 cursor-pointer hover:bg-muted/50 rounded-t-md">
               <div className="flex items-center gap-2">

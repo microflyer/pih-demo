@@ -20,6 +20,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useMyTime } from '../providers/my-time-provider'
+import { themes } from '@/entity-data/themes'
 import type { Project } from '@/entity-types/project'
 
 interface TimeEntryDialogProps {
@@ -35,7 +36,7 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
   const isProjectBased = !!project
 
   const themeId = project ? project.theme_id ?? null : null
-  const theme = themeId ? { id: themeId, name: '', type: 'project' } : null
+  const theme = themeId ? themes.find(t => t.id === themeId) : null
   const activities = isProjectBased
     ? getActivitiesForProject(project.id)
     : []
@@ -116,7 +117,7 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
               </Label>
               {isProjectBased ? (
                 <Select value={themeId ?? ''} disabled>
-                  <SelectTrigger className="col-span-3">
+                  <SelectTrigger className="col-span-3 w-full">
                     <SelectValue placeholder="Select theme" />
                   </SelectTrigger>
                   <SelectContent>
@@ -127,7 +128,7 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
                 </Select>
               ) : (
                 <Select value={selectedThemeId} onValueChange={setSelectedThemeId} required>
-                  <SelectTrigger className="col-span-3">
+                  <SelectTrigger className="col-span-3 w-full">
                     <SelectValue placeholder="Select theme" />
                   </SelectTrigger>
                   <SelectContent>
@@ -152,7 +153,7 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
                 required
                 disabled={isProjectBased ? false : !selectedThemeId}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3 w-full">
                   <SelectValue placeholder={isProjectBased ? "Select activity" : "Select theme first"} />
                 </SelectTrigger>
                 <SelectContent>

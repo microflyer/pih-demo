@@ -51,7 +51,7 @@ export function NonProjectTime({ date }: NonProjectTimeProps) {
         date={date}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="border rounded-md mb-1.5 bg-card">
+        <div className="rounded-md">
           <CollapsibleTrigger asChild>
             <div className="flex items-center justify-between px-2.5 py-1.5 cursor-pointer hover:bg-muted/50 rounded-t-md">
               <div className="flex items-center gap-2">
@@ -60,7 +60,7 @@ export function NonProjectTime({ date }: NonProjectTimeProps) {
                 ) : (
                   <ChevronRight className="h-3.5 w-3.5" />
                 )}
-                <span className="text-sm font-medium">Non-Project Time</span>
+                <span className="text-sm font-medium">Time Entries</span>
                 {totalHours > 0 && (
                   <span className="text-[10px] text-muted-foreground">
                     ({totalHours.toFixed(1)}h)

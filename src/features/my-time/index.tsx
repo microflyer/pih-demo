@@ -118,7 +118,11 @@ function MyTimeContent() {
 
         <TimeStats date={dateString} />
 
-        <div className="space-y-2">
+        {/* Projects Section */}
+        <div className="rounded-lg bg-muted/40 p-3 space-y-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+            Projects
+          </div>
           {projects.map((project) => (
             <ProjectTimeItem
               key={project.id}
@@ -130,7 +134,13 @@ function MyTimeContent() {
           ))}
         </div>
 
-        <NonProjectTime date={dateString} />
+        {/* Non-Project Section */}
+        <div className="rounded-lg bg-muted/40 p-3 space-y-2">
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+            Non-Projects
+          </div>
+          <NonProjectTime date={dateString} />
+        </div>
       </Main>
     </>
   )

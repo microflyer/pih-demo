@@ -25,20 +25,28 @@ export function TimeStats({ date }: TimeStatsProps) {
   const todayEntries = timeEntries.filter((e) => e.date === date)
   const totalHours = todayEntries.reduce((sum, e) => sum + e.hours, 0)
 
-  // Group by project with theme colors
+  // Group by project or theme (for non-project entries)
   const byProject = todayEntries.reduce((acc, entry) => {
-    if (entry.project_id) {
+    let name: string
+    let key: string
+    let isProject = entry.has_project && !!entry.project_id
+
+    if (isProject && entry.project_id) {
       const project = projects.find((p) => p.id === entry.project_id)
-      const theme = project?.theme_id ? themes.find(t => t.id === project.theme_id) : null
-      const name = project?.name ?? 'Unknown'
-      const key = entry.project_id
-      if (!acc[key]) {
-        acc[key] = { name, hours: 0, themeType: theme?.type ?? 'project' }
-      }
-      acc[key].hours += entry.hours
+      name = project?.name ?? 'Unknown'
+      key = entry.project_id
+    } else {
+      const theme = themes.find((t) => t.id === entry.theme_id)
+      name = theme?.name ?? 'Non-Project'
+      key = `non-project-${entry.theme_id ?? 'none'}`
     }
+
+    if (!acc[key]) {
+      acc[key] = { name, hours: 0, isProject }
+    }
+    acc[key].hours += entry.hours
     return acc
-  }, {} as Record<string, { name: string; hours: number; themeType: string }>)
+  }, {} as Record<string, { name: string; hours: number; isProject: boolean }>)
 
   const projectEntries = Object.entries(byProject)
     .map(([id, data]) => ({ id, ...data }))
