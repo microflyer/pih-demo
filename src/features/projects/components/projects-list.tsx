@@ -38,28 +38,28 @@ const businessUnitMap = new Map(businessUnits.map((bu) => [bu.id, bu.name]))
 const accountMap = new Map(accounts.map((a) => [a.id, a.name]))
 
 const PROJECT_TYPE_COLORS: Record<string, string> = {
-  Delivery: 'bg-blue-600',
-  Internal: 'bg-green-600',
-  'Proof of Concept': 'bg-purple-600',
-  Lean: 'bg-teal-600',
-  GB: 'bg-violet-600',
-  BB: 'bg-rose-600',
+  Delivery: 'bg-emerald-600',
+  Internal: 'bg-teal-600',
+  'Proof of Concept': 'bg-cyan-600',
+  Lean: 'bg-lime-600',
+  GB: 'bg-green-600',
+  BB: 'bg-emerald-600',
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  Active: 'bg-green-500',
-  Planning: 'bg-yellow-500',
-  Draft: 'bg-gray-400',
-  Completed: 'bg-blue-500',
+  Active: 'bg-emerald-500',
+  Planning: 'bg-amber-500',
+  Draft: 'bg-slate-400',
+  Completed: 'bg-green-500',
   'On Hold': 'bg-orange-500',
   Cancelled: 'bg-red-500',
 }
 
 const STAGE_COLORS: Record<string, string> = {
-  Discovery: 'bg-indigo-400',
+  Discovery: 'bg-emerald-400',
   Proposal: 'bg-amber-400',
-  Execution: 'bg-blue-500',
-  Closed: 'bg-gray-500',
+  Execution: 'bg-cyan-500',
+  Closed: 'bg-slate-500',
 }
 
 function formatShortDate(value: string | null): string {
@@ -267,7 +267,7 @@ function ProjectCard({ project }: ProjectCardProps) {
           <Link
             to='/projects/$projectId'
             params={{ projectId: project.id }}
-            className='block truncate font-semibold hover:text-primary'
+            className='block truncate font-semibold hover:text-slate-900 dark:hover:text-slate-100'
           >
             {project.name}
           </Link>
@@ -391,7 +391,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         <Link
           to='/projects/$projectId'
           params={{ projectId: project.id }}
-          className='cursor-pointer text-xs font-medium text-primary hover:underline'
+          className='cursor-pointer text-xs font-medium text-slate-600 hover:text-slate-900 hover:underline dark:text-slate-400 dark:hover:text-slate-100'
         >
           View details
         </Link>
