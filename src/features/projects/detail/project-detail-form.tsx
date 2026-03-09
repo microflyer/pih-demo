@@ -231,13 +231,13 @@ function CollapsibleSection({
       <CollapsibleTrigger asChild>
         <Button
           variant='ghost'
-          className='flex w-full justify-between px-4 py-3 font-semibold'
+          className='flex w-full cursor-pointer justify-between px-4 py-3 font-semibold text-foreground transition-colors hover:bg-muted/50'
         >
           <span>{title}</span>
           {isOpen ? (
-            <ChevronDown className='h-4 w-4' />
+            <ChevronDown className='h-4 w-4 text-muted-foreground' />
           ) : (
-            <ChevronRight className='h-4 w-4' />
+            <ChevronRight className='h-4 w-4 text-muted-foreground' />
           )}
         </Button>
       </CollapsibleTrigger>

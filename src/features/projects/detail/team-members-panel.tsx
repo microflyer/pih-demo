@@ -9,15 +9,22 @@ import { useProjects } from '../components/projects-provider'
 function DepartmentBadge({ department }: { department: string | null }) {
   if (!department) return null
 
-  const isLDT = department === 'LDT'
+  const styles: Record<string, string> = {
+    LDT: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400',
+    Digital:
+      'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-400',
+    Technology:
+      'border-cyan-200 bg-cyan-50 text-cyan-700 dark:border-cyan-800 dark:bg-cyan-950 dark:text-cyan-400',
+    Operations:
+      'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-400',
+  }
 
   return (
     <Badge
       className={`${
-        isLDT
-          ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400'
-          : 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400'
-      } px-2 py-0 text-[10px] font-semibold tracking-wider uppercase`}
+        styles[department] ||
+        'border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400'
+      } cursor-pointer px-2 py-0 text-[10px] font-semibold tracking-wider uppercase`}
     >
       {department}
     </Badge>
@@ -70,10 +77,10 @@ export function TeamMembersPanel({
             {teamUsers.map((user) => (
               <div
                 key={user.id}
-                className='flex items-center justify-between rounded-md border p-2'
+                className='group flex items-center justify-between rounded-lg border bg-card p-2.5 transition-all duration-200 hover:border-emerald-300 hover:shadow-sm dark:hover:border-emerald-700'
               >
                 <div className='flex items-center gap-3'>
-                  <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 text-xs font-medium ring-1 ring-border'>
+                  <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500/20 to-green-500/20 text-sm font-semibold text-emerald-700 ring-1 ring-border dark:from-emerald-500/30 dark:to-green-500/30 dark:text-emerald-400'>
                     {user.first_name[0]}
                     {user.last_name[0]}
                   </div>
@@ -92,10 +99,10 @@ export function TeamMembersPanel({
                 <Button
                   variant='ghost'
                   size='icon'
-                  className='h-6 w-6 text-muted-foreground hover:text-destructive'
+                  className='h-7 w-7 cursor-pointer text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive'
                   onClick={() => removeTeamMember(project.id, user.id)}
                 >
-                  <X className='h-3 w-3' />
+                  <X className='h-3.5 w-3.5' />
                 </Button>
               </div>
             ))}
