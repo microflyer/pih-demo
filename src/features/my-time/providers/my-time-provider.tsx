@@ -1,17 +1,22 @@
 import { createContext, useContext, useState, useMemo, type ReactNode } from 'react'
 import { projects } from '@/entity-data/projects'
+import { themes } from '@/entity-data/themes'
 import { timeEntries as initialTimeEntries } from '@/entity-data/time-entries'
 import { themeActivities } from '@/entity-data/theme-activities'
 import type { TimeEntry } from '@/entity-types/time-entry'
 import type { Project } from '@/entity-types/project'
 import type { ThemeActivity } from '@/entity-types/theme-activity'
+import type { Theme } from '@/entity-types/theme'
 
 interface MyTimeContextType {
   projects: Project[]
+  themes: Theme[]
+  nonProjectThemes: Theme[]
   timeEntries: TimeEntry[]
   addTimeEntry: (entry: Omit<TimeEntry, 'id'>) => void
   deleteTimeEntry: (id: string) => void
   getActivitiesForProject: (projectId: string) => ThemeActivity[]
+  getActivitiesForTheme: (themeId: string) => ThemeActivity[]
   getThemeForProject: (projectId: string) => string | null
 }
 
@@ -26,6 +31,10 @@ export function MyTimeProvider({ children }: { children: ReactNode }) {
     return projects.filter(
       (p) => p.status && !EXCLUDED_STATUSES.includes(p.status)
     )
+  }, [])
+
+  const nonProjectThemes = useMemo(() => {
+    return themes.filter((t) => t.type === 'non_project')
   }, [])
 
   const addTimeEntry = (entry: Omit<TimeEntry, 'id'>) => {
@@ -51,14 +60,21 @@ export function MyTimeProvider({ children }: { children: ReactNode }) {
     return project?.theme_id ?? null
   }
 
+  const getActivitiesForTheme = (themeId: string): ThemeActivity[] => {
+    return themeActivities.filter((a) => a.theme_id === themeId)
+  }
+
   return (
     <MyTimeContext.Provider
       value={{
         projects: activeProjects,
+        themes,
+        nonProjectThemes,
         timeEntries,
         addTimeEntry,
         deleteTimeEntry,
         getActivitiesForProject,
+        getActivitiesForTheme,
         getThemeForProject,
       }}
     >

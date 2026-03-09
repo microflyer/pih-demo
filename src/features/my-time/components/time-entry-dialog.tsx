@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,43 +20,60 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useMyTime } from '../providers/my-time-provider'
-import { themes } from '@/entity-data/themes'
 import type { Project } from '@/entity-types/project'
 
 interface TimeEntryDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  project: Project
+  project?: Project
   date: string
 }
 
 export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntryDialogProps) {
-  const { addTimeEntry, getActivitiesForProject, getThemeForProject } = useMyTime()
+  const { addTimeEntry, getActivitiesForProject, getActivitiesForTheme, nonProjectThemes } = useMyTime()
 
-  const themeId = getThemeForProject(project.id)
-  const theme = themes.find((t) => t.id === themeId)
-  const activities = getActivitiesForProject(project.id)
+  const isProjectBased = !!project
 
+  const themeId = project ? project.theme_id ?? null : null
+  const theme = themeId ? { id: themeId, name: '', type: 'project' } : null
+  const activities = isProjectBased
+    ? getActivitiesForProject(project.id)
+    : []
+
+  const [selectedThemeId, setSelectedThemeId] = useState<string>('')
   const [activity, setActivity] = useState('')
   const [hours, setHours] = useState('')
   const [comments, setComments] = useState('')
+
+  const themeActivities = selectedThemeId ? getActivitiesForTheme(selectedThemeId) : []
+
+  // Reset form when dialog opens/closes or project changes
+  useEffect(() => {
+    if (open) {
+      setSelectedThemeId('')
+      setActivity('')
+      setHours('')
+      setComments('')
+    }
+  }, [open, project])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!activity || !hours) return
 
+    const finalThemeId = isProjectBased ? themeId : selectedThemeId
+
     addTimeEntry({
       activity,
       hours: parseFloat(hours),
       comments: comments || null,
-      theme_id: themeId,
-      has_project: true,
-      project_id: project.id,
+      theme_id: finalThemeId,
+      has_project: isProjectBased,
+      project_id: isProjectBased ? project.id : null,
       date,
     })
 
-    // Reset form
     setActivity('')
     setHours('')
     setComments('')
@@ -65,7 +82,7 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
-      // Reset form when closing
+      setSelectedThemeId('')
       setActivity('')
       setHours('')
       setComments('')
@@ -73,32 +90,55 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
     onOpenChange(isOpen)
   }
 
+  const dialogTitle = isProjectBased
+    ? `Log Time - ${project.name}`
+    : 'Log Non-Project Time'
+
+  const dialogDescription = isProjectBased
+    ? `Record time spent on this project for ${date}`
+    : `Record time for activities not linked to a project for ${date}`
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Log Time - {project.name}</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
-            Record time spent on this project for {date}
+            {dialogDescription}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            {/* Theme - Disabled */}
+            {/* Theme - Selectable for non-project */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="theme" className="text-right">
-                Theme
+                Theme {!isProjectBased && '*'}
               </Label>
-              <Select value={themeId ?? ''} disabled>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select theme" />
-                </SelectTrigger>
-                <SelectContent>
-                  {theme && (
-                    <SelectItem value={theme.id}>{theme.name}</SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
+              {isProjectBased ? (
+                <Select value={themeId ?? ''} disabled>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select theme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {theme && (
+                      <SelectItem value={theme.id}>{theme.name}</SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Select value={selectedThemeId} onValueChange={setSelectedThemeId} required>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select theme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {nonProjectThemes.map((t) => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             {/* Activity - Required */}
@@ -106,12 +146,17 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
               <Label htmlFor="activity" className="text-right">
                 Activity *
               </Label>
-              <Select value={activity} onValueChange={setActivity} required>
+              <Select
+                value={activity}
+                onValueChange={setActivity}
+                required
+                disabled={isProjectBased ? false : !selectedThemeId}
+              >
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select activity" />
+                  <SelectValue placeholder={isProjectBased ? "Select activity" : "Select theme first"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {activities.map((a) => (
+                  {(isProjectBased ? activities : themeActivities).map((a) => (
                     <SelectItem key={a.id} value={a.name}>
                       {a.name}
                     </SelectItem>
@@ -156,15 +201,15 @@ export function TimeEntryDialog({ open, onOpenChange, project, date }: TimeEntry
             {/* has_project - Checked and disabled */}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="has_project" className="text-right">
-                Project
+                Type
               </Label>
               <div className="col-span-3 flex items-center space-x-2">
-                <Checkbox id="has_project" checked disabled />
+                <Checkbox id="has_project" checked={isProjectBased} disabled />
                 <label
                   htmlFor="has_project"
                   className="text-sm text-muted-foreground"
                 >
-                  Logged on project
+                  {isProjectBased ? 'Logged on project' : 'Non-project time'}
                 </label>
               </div>
             </div>

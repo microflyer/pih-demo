@@ -5,6 +5,7 @@ import { Main } from '@/components/layout/main'
 import { MyTimeProvider, useMyTime } from './providers/my-time-provider'
 import { TimeStats } from './components/time-stats'
 import { ProjectTimeItem } from './components/project-time-item'
+import { NonProjectTime } from './components/non-project-time'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
@@ -128,6 +129,8 @@ function MyTimeContent() {
             />
           ))}
         </div>
+
+        <NonProjectTime date={dateString} />
       </Main>
     </>
   )
