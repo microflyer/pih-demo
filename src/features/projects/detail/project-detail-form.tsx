@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { z } from 'zod'
 import { useForm, type Control } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,6 +6,8 @@ import { useNavigate } from '@tanstack/react-router'
 import { accounts } from '@/entity-data/accounts'
 import { businessUnits } from '@/entity-data/business-units'
 import { themes } from '@/entity-data/themes'
+import { teams } from '@/entity-data/teams'
+import { users } from '@/entity-data/users'
 import type { Project } from '@/entity-types/project'
 import { ChevronDown, ChevronRight, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -249,6 +251,29 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
   const navigate = useNavigate()
   const { updateProject } = useProjects()
 
+  // Get team members for this project
+  const projectTeamUserIds = useMemo(() => {
+    return teams
+      .filter((t) => t.project_id === project.id)
+      .map((t) => t.user_id)
+  }, [project.id])
+
+  const teamMembers = useMemo(() => {
+    return users.filter((u) => projectTeamUserIds.includes(u.id))
+  }, [projectTeamUserIds])
+
+  const bbOptions = useMemo(() => {
+    return teamMembers
+      .filter((u) => u.department === 'LDT')
+      .map((u) => ({ label: `${u.first_name} ${u.last_name}`, value: u.id }))
+  }, [teamMembers])
+
+  const digitalManagerOptions = useMemo(() => {
+    return teamMembers
+      .filter((u) => u.department === 'Digital')
+      .map((u) => ({ label: `${u.first_name} ${u.last_name}`, value: u.id }))
+  }, [teamMembers])
+
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
@@ -413,29 +438,19 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                   </FormItem>
                 )}
               />
-              <FormField
+              <SelectField
                 control={form.control}
                 name='digital_manager'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Digital Manager</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Name' {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+                label='Digital Manager'
+                options={digitalManagerOptions}
+                placeholder='Select...'
               />
-              <FormField
+              <SelectField
                 control={form.control}
                 name='bb'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>BB</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Name' {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
+                label='BB (LDT)'
+                options={bbOptions}
+                placeholder='Select...'
               />
             </div>
           </CollapsibleSection>
