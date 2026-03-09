@@ -3,7 +3,26 @@ import type { Project } from '@/entity-types/project'
 import { UserPlus, Users, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { useProjects } from '../components/projects-provider'
+
+function DepartmentBadge({ department }: { department: string | null }) {
+  if (!department) return null
+
+  const isLDT = department === 'LDT'
+
+  return (
+    <Badge
+      className={`${
+        isLDT
+          ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400'
+          : 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400'
+      } px-2 py-0 text-[10px] font-semibold uppercase tracking-wider`}
+    >
+      {department}
+    </Badge>
+  )
+}
 
 type TeamMembersPanelProps = {
   project: Project
@@ -53,8 +72,8 @@ export function TeamMembersPanel({
                 key={user.id}
                 className='flex items-center justify-between rounded-md border p-2'
               >
-                <div className='flex items-center gap-2'>
-                  <div className='flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-medium'>
+                <div className='flex items-center gap-3'>
+                  <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 text-xs font-medium ring-1 ring-border'>
                     {user.first_name[0]}
                     {user.last_name[0]}
                   </div>
@@ -62,7 +81,10 @@ export function TeamMembersPanel({
                     <p className='truncate text-sm font-medium'>
                       {user.first_name} {user.last_name}
                     </p>
-                    <p className='text-xs text-muted-foreground'>{user.sso}</p>
+                    <div className='flex items-center gap-2'>
+                      <p className='text-xs text-muted-foreground'>{user.sso}</p>
+                      <DepartmentBadge department={user.department} />
+                    </div>
                   </div>
                 </div>
                 <Button
