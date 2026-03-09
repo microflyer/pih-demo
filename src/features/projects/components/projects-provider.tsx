@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import useDialogState from '@/hooks/use-dialog-state'
 import type { Project } from '@/entity-types/project'
 import type { Team } from '@/entity-types/team'
 import { useProjectsStore } from '@/stores/projects-store'
+import useDialogState from '@/hooks/use-dialog-state'
 
 export type ProjectsDialogType = 'create' | 'delete' | 'members' | null
 
@@ -35,7 +35,9 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
   const addTeamMember = useProjectsStore((s) => s.addTeamMember)
   const removeTeamMember = useProjectsStore((s) => s.removeTeamMember)
 
-  const [openDialog, setOpenDialog] = useDialogState<'create' | 'delete' | 'members'>(null)
+  const [openDialog, setOpenDialog] = useDialogState<
+    'create' | 'delete' | 'members'
+  >(null)
   const [currentProject, setCurrentProject] = useState<Project | null>(null)
 
   const value: ProjectsContextType = {

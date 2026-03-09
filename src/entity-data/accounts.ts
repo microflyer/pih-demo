@@ -6,10 +6,18 @@ export const accounts: Account[] = [
   { id: 'acc-002', name: 'HSBC - BFS', business_unit_id: 'bu-001' },
   { id: 'acc-003', name: 'Mercedes Benz Mobility', business_unit_id: 'bu-001' },
   { id: 'acc-004', name: 'Amazon - BCM', business_unit_id: 'bu-001' },
-  { id: 'acc-005', name: 'Pacific Investment Management Company', business_unit_id: 'bu-001' },
+  {
+    id: 'acc-005',
+    name: 'Pacific Investment Management Company',
+    business_unit_id: 'bu-001',
+  },
 
   // Coke_Ecosystem_Unilever Accounts
-  { id: 'acc-006', name: 'Coca Cola Bottlers Japan', business_unit_id: 'bu-002' },
+  {
+    id: 'acc-006',
+    name: 'Coca Cola Bottlers Japan',
+    business_unit_id: 'bu-002',
+  },
   { id: 'acc-007', name: 'THE COCA COLA COMPANY', business_unit_id: 'bu-002' },
   { id: 'acc-008', name: 'UNILEVER', business_unit_id: 'bu-002' },
 
@@ -19,14 +27,22 @@ export const accounts: Account[] = [
   { id: 'acc-011', name: 'BEIERSDORF', business_unit_id: 'bu-003' },
   { id: 'acc-012', name: 'CARLSBERG', business_unit_id: 'bu-003' },
   { id: 'acc-013', name: 'DANONE', business_unit_id: 'bu-003' },
-  { id: 'acc-014', name: 'Estee Lauder Group of Companies', business_unit_id: 'bu-003' },
+  {
+    id: 'acc-014',
+    name: 'Estee Lauder Group of Companies',
+    business_unit_id: 'bu-003',
+  },
   { id: 'acc-015', name: 'Glanbia', business_unit_id: 'bu-003' },
   { id: 'acc-016', name: 'Haleon', business_unit_id: 'bu-003' },
   { id: 'acc-017', name: 'HUNTSMAN INTERNATIONAL', business_unit_id: 'bu-003' },
   { id: 'acc-018', name: 'MARS', business_unit_id: 'bu-003' },
   { id: 'acc-019', name: 'Mattel', business_unit_id: 'bu-003' },
   { id: 'acc-020', name: 'MONDELEZ INTERNATIONAL', business_unit_id: 'bu-003' },
-  { id: 'acc-021', name: 'RICH PRODUCTS CORPORATION', business_unit_id: 'bu-003' },
+  {
+    id: 'acc-021',
+    name: 'RICH PRODUCTS CORPORATION',
+    business_unit_id: 'bu-003',
+  },
   { id: 'acc-022', name: 'Roquette', business_unit_id: 'bu-003' },
 
   // Corporate Accounts
@@ -68,9 +84,17 @@ export const accounts: Account[] = [
   { id: 'acc-050', name: 'AIG', business_unit_id: 'bu-008' },
   { id: 'acc-051', name: 'AXA', business_unit_id: 'bu-008' },
   { id: 'acc-052', name: 'Bolttech', business_unit_id: 'bu-008' },
-  { id: 'acc-053', name: 'CHUBB GROUP OF INSURANCE COMPANIES', business_unit_id: 'bu-008' },
+  {
+    id: 'acc-053',
+    name: 'CHUBB GROUP OF INSURANCE COMPANIES',
+    business_unit_id: 'bu-008',
+  },
   { id: 'acc-054', name: 'HSBC Insurance', business_unit_id: 'bu-008' },
-  { id: 'acc-055', name: 'Unidentified - P&C Insurance - Enterprise', business_unit_id: 'bu-008' },
+  {
+    id: 'acc-055',
+    name: 'Unidentified - P&C Insurance - Enterprise',
+    business_unit_id: 'bu-008',
+  },
 
   // Lifesciences Accounts
   { id: 'acc-056', name: 'ABBOTT', business_unit_id: 'bu-009' },
@@ -78,12 +102,20 @@ export const accounts: Account[] = [
   { id: 'acc-058', name: 'ASTELLAS', business_unit_id: 'bu-009' },
   { id: 'acc-059', name: 'ASTRAZENECA', business_unit_id: 'bu-009' },
   { id: 'acc-060', name: 'BAXTER', business_unit_id: 'bu-009' },
-  { id: 'acc-061', name: 'BECTON DICKINSON AND COMPANY', business_unit_id: 'bu-009' },
+  {
+    id: 'acc-061',
+    name: 'BECTON DICKINSON AND COMPANY',
+    business_unit_id: 'bu-009',
+  },
   { id: 'acc-062', name: 'Cytiva', business_unit_id: 'bu-009' },
   { id: 'acc-063', name: 'Dentsply Sirona', business_unit_id: 'bu-009' },
   { id: 'acc-064', name: 'Embecta', business_unit_id: 'bu-009' },
   { id: 'acc-065', name: 'Evident Scientific', business_unit_id: 'bu-009' },
-  { id: 'acc-066', name: 'Ferring Pharmaceuticals', business_unit_id: 'bu-009' },
+  {
+    id: 'acc-066',
+    name: 'Ferring Pharmaceuticals',
+    business_unit_id: 'bu-009',
+  },
   { id: 'acc-067', name: 'GLAXOSMITHKLINE', business_unit_id: 'bu-009' },
   { id: 'acc-068', name: 'MERCK', business_unit_id: 'bu-009' },
   { id: 'acc-069', name: 'Organon & Co', business_unit_id: 'bu-009' },
@@ -119,7 +151,11 @@ export const accounts: Account[] = [
   { id: 'acc-097', name: 'NOVELIS', business_unit_id: 'bu-010' },
   { id: 'acc-098', name: 'Oil Field Services', business_unit_id: 'bu-010' },
   { id: 'acc-099', name: 'Olympus America', business_unit_id: 'bu-010' },
-  { id: 'acc-100', name: 'OTIS ELEVATOR CO. PTY LTD.', business_unit_id: 'bu-010' },
+  {
+    id: 'acc-100',
+    name: 'OTIS ELEVATOR CO. PTY LTD.',
+    business_unit_id: 'bu-010',
+  },
   { id: 'acc-101', name: 'Owens Corning', business_unit_id: 'bu-010' },
   { id: 'acc-102', name: 'Proterial', business_unit_id: 'bu-010' },
   { id: 'acc-103', name: 'Raytheon Technologies', business_unit_id: 'bu-010' },
@@ -130,7 +166,11 @@ export const accounts: Account[] = [
   { id: 'acc-108', name: 'TE CONNECTIVITY', business_unit_id: 'bu-010' },
   { id: 'acc-109', name: 'Tenneco', business_unit_id: 'bu-010' },
   { id: 'acc-110', name: 'Unidentified - IM & AD', business_unit_id: 'bu-010' },
-  { id: 'acc-111', name: 'Unidentified - IMS - GE', business_unit_id: 'bu-010' },
+  {
+    id: 'acc-111',
+    name: 'Unidentified - IMS - GE',
+    business_unit_id: 'bu-010',
+  },
   { id: 'acc-112', name: 'Veolia', business_unit_id: 'bu-010' },
   { id: 'acc-113', name: 'Yokogawa Electric', business_unit_id: 'bu-010' },
 

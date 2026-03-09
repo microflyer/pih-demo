@@ -2,6 +2,9 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
+import { accounts } from '@/entity-data/accounts'
+import { businessUnits } from '@/entity-data/business-units'
+import type { Project } from '@/entity-types/project'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -27,15 +30,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { businessUnits } from '@/entity-data/business-units'
-import { accounts } from '@/entity-data/accounts'
-import type { Project } from '@/entity-types/project'
 import { useProjects } from './projects-provider'
 
 const PROJECT_TYPES = [
-  { label: 'Delivery', value: 'Delivery' },
-  { label: 'Internal', value: 'Internal' },
-  { label: 'Proof of Concept', value: 'Proof of Concept' },
+  { label: 'Lean', value: 'Lean' },
+  { label: 'GB', value: 'GB' },
+  { label: 'BB', value: 'BB' },
 ] as const
 
 const createProjectSchema = z.object({

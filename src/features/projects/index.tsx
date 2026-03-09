@@ -1,31 +1,30 @@
-import { getRouteApi } from '@tanstack/react-router'
+import { useState } from 'react'
+import { LayoutGrid, List } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { toast } from 'sonner'
 import { ProjectCreateDialog } from './components/project-create-dialog'
 import { ProjectDeleteDialog } from './components/project-delete-dialog'
-import { ProjectMembersDrawer } from './components/project-members-drawer'
+import { TeamMembersDialog } from './components/project-team-members-dialog'
+import { ProjectsList } from './components/projects-list'
 import { ProjectsPrimaryButtons } from './components/projects-primary-buttons'
 import { ProjectsProvider, useProjects } from './components/projects-provider'
 import { ProjectsTable } from './components/projects-table'
 
-const route = getRouteApi('/_authenticated/projects/')
+type ViewMode = 'list' | 'board'
 
 function ProjectsContent() {
-  const {
-    projects,
-    openDialog,
-    setOpenDialog,
-    currentProject,
-    setCurrentProject,
-    removeProject,
-  } = useProjects()
-  const search = route.useSearch()
-  const navigate = route.useNavigate()
+  const { projects, openDialog, setOpenDialog } = useProjects()
+  const [viewMode, setViewMode] = useState<ViewMode>('list')
 
   return (
     <>
@@ -35,33 +34,50 @@ function ProjectsContent() {
           if (!open) setOpenDialog(null)
         }}
       />
+      <TeamMembersDialog
+        open={openDialog === 'members'}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null)
+        }}
+      />
       <ProjectDeleteDialog
         open={openDialog === 'delete'}
         onOpenChange={(open) => {
-          if (!open) {
-            setOpenDialog(null)
-            setCurrentProject(null)
-          }
+          if (!open) setOpenDialog(null)
         }}
-        project={currentProject}
-        onConfirm={(projectId) => {
-          removeProject(projectId)
-          toast.success('Project deleted')
-        }}
-      />
-      <ProjectMembersDrawer
-        open={openDialog === 'members'}
-        onOpenChange={(open) => {
-          if (!open) {
-            setOpenDialog(null)
-            setCurrentProject(null)
-          }
-        }}
-        project={currentProject}
       />
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
+          {/* View Toggle */}
+          <div className='flex items-center gap-1 rounded-md border bg-background p-1'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='h-8 px-2'
+                  onClick={() => setViewMode('list')}
+                >
+                  <List className='h-4 w-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>List view</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'board' ? 'secondary' : 'ghost'}
+                  size='sm'
+                  className='h-8 px-2'
+                  onClick={() => setViewMode('board')}
+                >
+                  <LayoutGrid className='h-4 w-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Board view</TooltipContent>
+            </Tooltip>
+          </div>
           <ThemeSwitch />
           <ConfigDrawer />
           <ProfileDropdown />
@@ -72,13 +88,15 @@ function ProjectsContent() {
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Projects</h2>
-            <p className='text-muted-foreground'>
-              Create and manage projects.
-            </p>
+            <p className='text-muted-foreground'>Create and manage projects.</p>
           </div>
           <ProjectsPrimaryButtons />
         </div>
-        <ProjectsTable data={projects} search={search} navigate={navigate} />
+        {viewMode === 'list' ? (
+          <ProjectsTable data={projects} />
+        ) : (
+          <ProjectsList projects={projects} />
+        )}
       </Main>
     </>
   )

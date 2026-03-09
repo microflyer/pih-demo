@@ -1,13 +1,12 @@
 import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
+import { accounts } from '@/entity-data/accounts'
+import { businessUnits } from '@/entity-data/business-units'
+import type { Project } from '@/entity-types/project'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { businessUnits } from '@/entity-data/business-units'
-import { accounts } from '@/entity-data/accounts'
-import type { Project } from '@/entity-types/project'
 import { DataTableRowActions } from './data-table-row-actions'
 
 const businessUnitMap = new Map(businessUnits.map((bu) => [bu.id, bu.name]))
@@ -19,12 +18,112 @@ function formatShortDate(value: string | null): string {
     const d = new Date(value)
     return d.toLocaleDateString(undefined, {
       year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
     })
   } catch {
     return value
   }
+}
+
+function formatCurrency(value: number | null): string {
+  if (value == null) return '—'
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)
+}
+
+function formatNumber(value: number | null): string {
+  if (value == null) return '—'
+  return value.toLocaleString('en-US')
+}
+
+function StatusBadge({ status }: { status: string | null }) {
+  if (!status) return <span className='text-muted-foreground'>—</span>
+
+  const styles: Record<string, string> = {
+    Active:
+      'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
+    Planning:
+      'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+    Draft:
+      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700',
+    Completed:
+      'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
+    'On Hold':
+      'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800',
+    Cancelled:
+      'bg-red-100 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800',
+  }
+
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
+        styles[status] || 'border-slate-200 bg-slate-100 text-slate-600'
+      )}
+    >
+      {status}
+    </span>
+  )
+}
+
+function StageBadge({ stage }: { stage: string | null }) {
+  if (!stage) return <span className='text-muted-foreground'>—</span>
+
+  const styles: Record<string, string> = {
+    Discovery:
+      'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800',
+    Proposal:
+      'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800',
+    Execution:
+      'bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800',
+    Closed:
+      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700',
+  }
+
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
+        styles[stage] || 'border-slate-200 bg-slate-100 text-slate-600'
+      )}
+    >
+      {stage}
+    </span>
+  )
+}
+
+function ProjectTypeBadge({ type }: { type: string | null }) {
+  if (!type) return <span className='text-muted-foreground'>—</span>
+
+  const styles: Record<string, string> = {
+    Delivery:
+      'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
+    Internal:
+      'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800',
+    'Proof of Concept':
+      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+  }
+
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
+        styles[type] || 'border-slate-200 bg-slate-100 text-slate-600'
+      )}
+    >
+      {type}
+    </span>
+  )
+}
+
+function BooleanBadge({ value }: { value: boolean | null }) {
+  if (!value) return <span className='text-muted-foreground'>No</span>
+  return <span className='font-medium text-foreground'>Yes</span>
 }
 
 export const projectsColumns: ColumnDef<Project>[] = [
@@ -38,27 +137,37 @@ export const projectsColumns: ColumnDef<Project>[] = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'
-        className='translate-y-[2px]'
+        className='translate-y-[1px]'
       />
     ),
-    meta: {
-      className: cn('max-md:sticky start-0 z-10 rounded-tl-[inherit]'),
-    },
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label='Select row'
-        className='translate-y-[2px]'
+        className='translate-y-[1px]'
       />
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 40,
+  },
+  {
+    accessorKey: 'id',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='ID' />
+    ),
+    cell: ({ row }) => (
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('id') as string}
+      </span>
+    ),
+    size: 100,
   },
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Name' />
+      <DataTableColumnHeader column={column} title='Project Name' />
     ),
     cell: ({ row }) => {
       const project = row.original
@@ -68,30 +177,28 @@ export const projectsColumns: ColumnDef<Project>[] = [
           params={{ projectId: project.id }}
           className='font-medium text-primary hover:underline'
         >
-          <LongText className='max-w-40'>{project.name}</LongText>
+          <LongText className='max-w-[200px]'>{project.name}</LongText>
         </Link>
       )
     },
-    meta: {
-      className: cn(
-        'ps-0.5 max-md:sticky start-6 @4xl/content:table-cell'
-      ),
-    },
-    enableHiding: false,
+    size: 250,
   },
   {
     id: 'business_unit',
-    accessorFn: (row) => businessUnitMap.get(row.business_unit_id) ?? row.business_unit_id,
+    accessorFn: (row) =>
+      businessUnitMap.get(row.business_unit_id) ?? row.business_unit_id,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Business Unit' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground'>
-        {businessUnitMap.get(row.original.business_unit_id) ?? row.original.business_unit_id}
+      <span className='text-sm'>
+        {businessUnitMap.get(row.original.business_unit_id) ??
+          row.original.business_unit_id}
       </span>
     ),
     filterFn: (row, _id, value: string[]) =>
       value.length === 0 || value.includes(row.original.business_unit_id),
+    size: 180,
   },
   {
     id: 'account',
@@ -100,88 +207,140 @@ export const projectsColumns: ColumnDef<Project>[] = [
       <DataTableColumnHeader column={column} title='Account' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground'>
+      <span className='text-sm text-muted-foreground'>
         {accountMap.get(row.original.account_id) ?? row.original.account_id}
       </span>
     ),
+    size: 180,
   },
   {
     accessorKey: 'project_type',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Project Type' />
+      <DataTableColumnHeader column={column} title='Type' />
     ),
     cell: ({ row }) => (
-      <Badge variant='secondary' className='font-normal'>
-        {row.getValue('project_type') as string}
-      </Badge>
+      <ProjectTypeBadge type={row.getValue('project_type') as string | null} />
     ),
     filterFn: (row, _id, value: string[]) =>
-      value.length === 0 || value.includes((row.getValue('project_type') as string) ?? ''),
+      value.length === 0 ||
+      value.includes((row.getValue('project_type') as string) ?? ''),
+    size: 140,
   },
   {
     accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
-    cell: ({ row }) => {
-      const status = row.getValue('status') as string | null
-      if (!status) return <span className='text-muted-foreground'>—</span>
-      return (
-        <Badge variant='outline' className='capitalize'>
-          {status}
-        </Badge>
-      )
-    },
+    cell: ({ row }) => (
+      <StatusBadge status={row.getValue('status') as string | null} />
+    ),
     filterFn: (row, _id, value: string[]) =>
-      value.length === 0 || value.includes((row.getValue('status') as string) ?? ''),
+      value.length === 0 ||
+      value.includes((row.getValue('status') as string) ?? ''),
+    size: 100,
   },
   {
     accessorKey: 'stage',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Stage' />
     ),
-    cell: ({ row }) => {
-      const stage = row.getValue('stage') as string | null
-      return (
-        <span className='text-muted-foreground'>{stage ?? '—'}</span>
-      )
-    },
+    cell: ({ row }) => (
+      <StageBadge stage={row.getValue('stage') as string | null} />
+    ),
+    size: 100,
   },
   {
     accessorKey: 'start_date',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Start' />
+      <DataTableColumnHeader column={column} title='Start Date' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm'>
+      <span className='font-mono text-xs'>
         {formatShortDate(row.original.start_date)}
       </span>
     ),
+    size: 110,
   },
   {
     accessorKey: 'end_date',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='End' />
+      <DataTableColumnHeader column={column} title='End Date' />
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm'>
+      <span className='font-mono text-xs'>
         {formatShortDate(row.original.end_date)}
       </span>
     ),
+    size: 110,
+  },
+  {
+    accessorKey: 'cost',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Cost' />
+    ),
+    cell: ({ row }) => (
+      <span className='font-mono text-xs'>
+        {formatCurrency(row.original.cost)}
+      </span>
+    ),
+    size: 100,
+  },
+  {
+    accessorKey: 'revenue',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Revenue' />
+    ),
+    cell: ({ row }) => (
+      <span className='font-mono text-xs'>
+        {formatCurrency(row.original.revenue)}
+      </span>
+    ),
+    size: 100,
+  },
+  {
+    accessorKey: 'estimated_hours',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Est. Hours' />
+    ),
+    cell: ({ row }) => (
+      <span className='font-mono text-xs'>
+        {formatNumber(row.original.estimated_hours)}
+      </span>
+    ),
+    size: 90,
+  },
+  {
+    accessorKey: 'actual_hours',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Actual Hours' />
+    ),
+    cell: ({ row }) => (
+      <span className='font-mono text-xs'>
+        {formatNumber(row.original.actual_hours)}
+      </span>
+    ),
+    size: 100,
   },
   {
     accessorKey: 'is_billiable',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Billable' />
     ),
-    cell: ({ row }) => (
-      <Badge variant={row.original.is_billiable ? 'default' : 'secondary'}>
-        {row.original.is_billiable ? 'Yes' : 'No'}
-      </Badge>
+    cell: ({ row }) => <BooleanBadge value={row.original.is_billiable} />,
+    size: 80,
+  },
+  {
+    accessorKey: 'is_external',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='External' />
     ),
+    cell: ({ row }) => <BooleanBadge value={row.original.is_external} />,
+    size: 80,
   },
   {
     id: 'actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,
+    size: 60,
+    enableHiding: false,
   },
 ]

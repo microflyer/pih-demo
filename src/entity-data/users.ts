@@ -8,7 +8,7 @@ export const users: User[] = [
     last_name: 'Mu',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710009318',
@@ -17,7 +17,7 @@ export const users: User[] = [
     last_name: 'Zhao',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710016012',
@@ -26,7 +26,7 @@ export const users: User[] = [
     last_name: 'Wang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-705001196',
@@ -35,7 +35,7 @@ export const users: User[] = [
     last_name: 'Liew',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710016527',
@@ -44,7 +44,7 @@ export const users: User[] = [
     last_name: 'Qin',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710010706',
@@ -53,7 +53,7 @@ export const users: User[] = [
     last_name: 'Dong',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-703018261',
@@ -62,7 +62,7 @@ export const users: User[] = [
     last_name: 'Ding',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-326000232',
@@ -71,7 +71,7 @@ export const users: User[] = [
     last_name: 'Zhang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-703010613',
@@ -80,7 +80,7 @@ export const users: User[] = [
     last_name: 'Zhang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710006151',
@@ -89,7 +89,7 @@ export const users: User[] = [
     last_name: 'Miao',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-303022962',
@@ -98,7 +98,7 @@ export const users: User[] = [
     last_name: 'Zhao',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710016007',
@@ -107,7 +107,7 @@ export const users: User[] = [
     last_name: 'Zhang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710013977',
@@ -116,7 +116,7 @@ export const users: User[] = [
     last_name: 'Yang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710010710',
@@ -125,7 +125,7 @@ export const users: User[] = [
     last_name: 'Jin',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710010291',
@@ -134,7 +134,7 @@ export const users: User[] = [
     last_name: 'Yan',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710005399',
@@ -143,7 +143,7 @@ export const users: User[] = [
     last_name: 'Wang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710002062',
@@ -152,7 +152,7 @@ export const users: User[] = [
     last_name: 'Zhang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710018478',
@@ -161,7 +161,7 @@ export const users: User[] = [
     last_name: 'Wang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710006889',
@@ -170,7 +170,7 @@ export const users: User[] = [
     last_name: 'Liu',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-720001671',
@@ -179,7 +179,7 @@ export const users: User[] = [
     last_name: 'Ukai',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710020041',
@@ -188,7 +188,7 @@ export const users: User[] = [
     last_name: 'Jin',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-705001443',
@@ -197,7 +197,7 @@ export const users: User[] = [
     last_name: 'Pasha',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710000362',
@@ -206,7 +206,7 @@ export const users: User[] = [
     last_name: 'Yang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-602000555',
@@ -215,7 +215,7 @@ export const users: User[] = [
     last_name: 'Vongseng',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710006106',
@@ -224,7 +224,7 @@ export const users: User[] = [
     last_name: 'Liang',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
   },
   {
     id: 'user-710020584',
@@ -233,6 +233,60 @@ export const users: User[] = [
     last_name: 'Ai',
     band: null,
     rate: null,
-    department: null,
+    department: 'LDT',
+  },
+  {
+    id: 'user-710008315',
+    sso: '710008315',
+    first_name: 'Wei',
+    last_name: 'Jia',
+    band: '4C',
+    rate: 260,
+    department: 'Digital',
+  },
+  {
+    id: 'user-710006169',
+    sso: '710006169',
+    first_name: 'Pengju',
+    last_name: 'Lang',
+    band: '4C',
+    rate: 260,
+    department: 'Digital',
+  },
+  {
+    id: 'user-710006170',
+    sso: '710006170',
+    first_name: 'Shuang',
+    last_name: 'Li',
+    band: '4A',
+    rate: 140,
+    department: 'Digital',
+  },
+  {
+    id: 'user-710006171',
+    sso: '710006171',
+    first_name: 'Ming',
+    last_name: 'Tan',
+    band: '4D',
+    rate: 360,
+    department: 'Digital',
+  },
+  {
+    id: 'user-710006172',
+    sso: '710006172',
+    first_name: 'Yue',
+    last_name: 'Wu',
+    band: '4A',
+    rate: 140,
+    department: 'Digital',
+  },
+  {
+    id: 'user-710006173',
+    sso: '710006173',
+    first_name: 'Zongbin',
+    last_name: 'Yu',
+    band: '4A',
+    rate: 140,
+    department: 'Digital',
   },
 ]

@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
+  type PaginationState,
   type SortingState,
   type VisibilityState,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -11,8 +13,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { businessUnits } from '@/entity-data/business-units'
+import type { Project } from '@/entity-types/project'
 import { cn } from '@/lib/utils'
-import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import {
   Table,
   TableBody,
@@ -22,38 +25,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { businessUnits } from '@/entity-data/business-units'
-import type { Project } from '@/entity-types/project'
 import { projectsColumns as columns } from './projects-columns'
 
 type ProjectsTableProps = {
   data: Project[]
-  search: Record<string, unknown>
-  navigate: NavigateFn
 }
 
-export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
+export function ProjectsTable({ data }: ProjectsTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
-
-  const {
-    columnFilters,
-    onColumnFiltersChange,
-    pagination,
-    onPaginationChange,
-    ensurePageInRange,
-  } = useTableUrlState({
-    search,
-    navigate,
-    pagination: { defaultPage: 1, defaultPageSize: 10 },
-    globalFilter: { enabled: false },
-    columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
-      { columnId: 'project_type', searchKey: 'project_type', type: 'array' },
-      { columnId: 'status', searchKey: 'status', type: 'array' },
-      { columnId: 'business_unit', searchKey: 'business_unit_id', type: 'array' },
-    ],
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
   })
 
   const table = useReactTable({
@@ -67,11 +52,11 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
       columnVisibility,
     },
     enableRowSelection: true,
-    onPaginationChange,
-    onColumnFiltersChange,
+    onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -79,10 +64,6 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-
-  useEffect(() => {
-    ensurePageInRange(table.getPageCount())
-  }, [table, ensurePageInRange])
 
   return (
     <div
@@ -93,26 +74,33 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Filter projects...'
+        searchPlaceholder='Search projects...'
         searchKey='name'
         filters={[
           {
             columnId: 'project_type',
             title: 'Project Type',
             options: [
-              { label: 'Delivery', value: 'Delivery' },
-              { label: 'Internal', value: 'Internal' },
-              { label: 'Proof of Concept', value: 'Proof of Concept' },
+              { label: 'Lean', value: 'Lean' },
+              { label: 'GB', value: 'GB' },
+              { label: 'BB', value: 'BB' },
             ],
           },
           {
             columnId: 'status',
             title: 'Status',
             options: [
-              { label: 'Active', value: 'Active' },
-              { label: 'Planning', value: 'Planning' },
-              { label: 'Draft', value: 'Draft' },
-              { label: 'Completed', value: 'Completed' },
+              { label: 'As-Is Assessment', value: 'As-Is Assessment' },
+              { label: 'To-Be Design', value: 'To-Be Design' },
+              { label: 'SOP Creation', value: 'SOP Creation' },
+              { label: 'IT Setup', value: 'IT Setup' },
+              { label: 'Coding To Be Started', value: 'Coding To Be Started' },
+              { label: 'Coding', value: 'Coding' },
+              { label: 'UAT', value: 'UAT' },
+              { label: 'Deployed', value: 'Deployed' },
+              { label: 'To Be Started', value: 'To Be Started' },
+              { label: 'Dropped', value: 'Dropped' },
+              { label: 'On Hold', value: 'On Hold' },
             ],
           },
           {
@@ -125,20 +113,20 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
           },
         ]}
       />
-      <div className='overflow-hidden rounded-md border'>
-        <Table>
-          <TableHeader>
+      <div className='rounded-md border border-border'>
+        <Table className='audit-table'>
+          <TableHeader className='bg-muted/50'>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className='group/row'>
+              <TableRow
+                key={headerGroup.id}
+                className='border-b border-border hover:bg-transparent'
+              >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
                     colSpan={header.colSpan}
-                    className={cn(
-                      'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
-                      header.column.columnDef.meta?.className,
-                      header.column.columnDef.meta?.thClassName
-                    )}
+                    style={{ width: header.getSize() }}
+                    className='h-10 bg-muted/50 text-xs font-semibold tracking-wide text-muted-foreground uppercase'
                   >
                     {header.isPlaceholder
                       ? null
@@ -153,21 +141,20 @@ export function ProjectsTable({ data, search, navigate }: ProjectsTableProps) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className='group/row'
+                  className={cn(
+                    'h-11 border-b border-border transition-colors',
+                    index % 2 === 0
+                      ? 'bg-background'
+                      : 'bg-muted/20 hover:bg-muted/30',
+                    'hover:bg-muted/50'
+                  )}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn(
-                        'bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted',
-                        cell.column.columnDef.meta?.className,
-                        cell.column.columnDef.meta?.tdClassName
-                      )}
-                    >
+                    <TableCell key={cell.id} className='py-1.5 text-sm'>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

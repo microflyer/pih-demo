@@ -1,41 +1,57 @@
+import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import type { Project } from '@/entity-types/project'
+import { useProjects } from './projects-provider'
 
 type ProjectDeleteDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  project: Project | null
-  onConfirm: (projectId: string) => void
 }
 
 export function ProjectDeleteDialog({
   open,
   onOpenChange,
-  project,
-  onConfirm,
 }: ProjectDeleteDialogProps) {
-  if (!project) return null
+  const navigate = useNavigate()
+  const { currentProject, removeProject, setCurrentProject, setOpenDialog } =
+    useProjects()
 
-  const handleDelete = () => {
-    onConfirm(project.id)
+  if (!currentProject) return null
+
+  const handleConfirm = () => {
+    removeProject(currentProject.id)
+    setCurrentProject(null)
+    setOpenDialog(null)
     onOpenChange(false)
+    toast.success('Project deleted')
+    navigate({ to: '/projects' })
+  }
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setCurrentProject(null)
+      setOpenDialog(null)
+    }
+    onOpenChange(isOpen)
   }
 
   return (
     <ConfirmDialog
       open={open}
-      onOpenChange={onOpenChange}
-      handleConfirm={handleDelete}
-      destructive
-      title='Delete project'
+      onOpenChange={handleOpenChange}
+      title={`Delete "${currentProject.name}"?`}
       desc={
         <>
-          Are you sure you want to delete{' '}
-          <span className='font-semibold'>{project.name}</span>? This will remove
-          the project and its team associations. This action cannot be undone.
+          You are about to delete the project{' '}
+          <strong>{currentProject.name}</strong>. This will also remove all team
+          members associated with this project.
+          <br />
+          This action cannot be undone.
         </>
       }
       confirmText='Delete'
+      destructive
+      handleConfirm={handleConfirm}
     />
   )
 }

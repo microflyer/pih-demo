@@ -1,10 +1,10 @@
-import { create } from 'zustand'
 import {
   projects as initialProjects,
   teams as initialTeams,
 } from '@/entity-data'
 import type { Project } from '@/entity-types/project'
 import type { Team } from '@/entity-types/team'
+import { create } from 'zustand'
 
 function nextTeamId(teams: Team[]): string {
   const nums = teams

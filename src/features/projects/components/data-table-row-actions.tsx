@@ -1,7 +1,8 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { type Row } from '@tanstack/react-table'
-import { Pencil, Trash2, Users } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
+import { type Row } from '@tanstack/react-table'
+import type { Project } from '@/entity-types/project'
+import { Pencil, Trash2, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { Project } from '@/entity-types/project'
 import { useProjects } from './projects-provider'
 
 type DataTableRowActionsProps = {
@@ -35,7 +35,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[180px]'>
         <DropdownMenuItem
-          onClick={() => navigate({ to: '/projects/$projectId', params: { projectId: project.id } })}
+          onClick={() =>
+            navigate({
+              to: '/projects/$projectId',
+              params: { projectId: project.id },
+            })
+          }
         >
           View / Edit
           <Pencil className='ms-auto h-4 w-4' />
