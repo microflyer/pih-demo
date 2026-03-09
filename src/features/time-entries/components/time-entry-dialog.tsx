@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -29,40 +29,52 @@ interface TimeEntryDialogProps {
   editEntry?: TimeEntry | null
 }
 
+function getDefaultValues(editEntry: TimeEntry | null | undefined) {
+  if (editEntry) {
+    return {
+      date: editEntry.date,
+      hasProject: editEntry.has_project,
+      projectId: editEntry.project_id ?? '',
+      themeId: editEntry.theme_id ?? '',
+      activity: editEntry.activity,
+      hours: editEntry.hours.toString(),
+      comments: editEntry.comments ?? '',
+    }
+  }
+  return {
+    date: new Date().toISOString().split('T')[0],
+    hasProject: true,
+    projectId: '',
+    themeId: '',
+    activity: '',
+    hours: '',
+    comments: '',
+  }
+}
+
 export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDialogProps) {
   const { addTimeEntry, updateTimeEntry, projects, themeActivities } = useTimeEntries()
 
-  const [date, setDate] = useState('')
-  const [hasProject, setHasProject] = useState(true)
-  const [projectId, setProjectId] = useState('')
-  const [themeId, setThemeId] = useState('')
-  const [activity, setActivity] = useState('')
-  const [hours, setHours] = useState('')
-  const [comments, setComments] = useState('')
+  // Use key to reset form when dialog opens/closes or editEntry changes
+  const [formKey, setFormKey] = useState(0)
 
-  // Set initial values when dialog opens for editing
-  useEffect(() => {
-    if (open) {
-      if (editEntry) {
-        setDate(editEntry.date)
-        setHasProject(editEntry.has_project)
-        setProjectId(editEntry.project_id ?? '')
-        setThemeId(editEntry.theme_id ?? '')
-        setActivity(editEntry.activity)
-        setHours(editEntry.hours.toString())
-        setComments(editEntry.comments ?? '')
-      } else {
-        // Reset for new entry
-        setDate(new Date().toISOString().split('T')[0])
-        setHasProject(true)
-        setProjectId('')
-        setThemeId('')
-        setActivity('')
-        setHours('')
-        setComments('')
-      }
+  // Reset form when dialog closes
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setFormKey((k) => k + 1)
     }
-  }, [open, editEntry])
+    onOpenChange(isOpen)
+  }
+
+  const defaultValues = getDefaultValues(editEntry)
+
+  const [date, setDate] = useState(defaultValues.date)
+  const [hasProject, setHasProject] = useState(defaultValues.hasProject)
+  const [projectId, setProjectId] = useState(defaultValues.projectId)
+  const [themeId, setThemeId] = useState(defaultValues.themeId)
+  const [activity, setActivity] = useState(defaultValues.activity)
+  const [hours, setHours] = useState(defaultValues.hours)
+  const [comments, setComments] = useState(defaultValues.comments)
 
   // Get activities based on theme
   const activities = themeActivities.filter((a) => a.theme_id === themeId)
@@ -79,7 +91,7 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
       date,
       has_project: hasProject,
       project_id: hasProject ? projectId : null,
-      theme_id: hasProject ? (selectedProject?.theme_id ?? null) : themeId || null,
+      theme_id: hasProject ? selectedProject?.theme_id : themeId,
       activity,
       hours: parseFloat(hours),
       comments: comments || null,
@@ -91,24 +103,15 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
       addTimeEntry(entryData)
     }
 
-    onOpenChange(false)
-  }
-
-  const handleOpenChange = (isOpen: boolean) => {
-    if (!isOpen) {
-      setDate('')
-      setHasProject(true)
-      setProjectId('')
-      setThemeId('')
-      setActivity('')
-      setHours('')
-      setComments('')
-    }
-    onOpenChange(isOpen)
+    handleOpenChange(false)
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog
+      key={formKey}
+      open={open}
+      onOpenChange={handleOpenChange}
+    >
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{editEntry ? 'Edit Time Entry' : 'Add Time Entry'}</DialogTitle>
@@ -245,7 +248,7 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
               Cancel
             </Button>
             <Button type="submit">{editEntry ? 'Save Changes' : 'Add Entry'}</Button>
