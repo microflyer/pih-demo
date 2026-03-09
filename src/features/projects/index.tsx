@@ -56,7 +56,7 @@ function ProjectsContent() {
                 <Button
                   variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                   size='sm'
-                  className='h-8 px-2'
+                  className='h-8 cursor-pointer px-2'
                   onClick={() => setViewMode('list')}
                 >
                   <List className='h-4 w-4' />
@@ -69,7 +69,7 @@ function ProjectsContent() {
                 <Button
                   variant={viewMode === 'board' ? 'secondary' : 'ghost'}
                   size='sm'
-                  className='h-8 px-2'
+                  className='h-8 cursor-pointer px-2'
                   onClick={() => setViewMode('board')}
                 >
                   <LayoutGrid className='h-4 w-4' />

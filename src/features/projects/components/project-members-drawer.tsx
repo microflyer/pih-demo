@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { users } from '@/entity-data'
+import { users } from '@/entity-data/users'
 import type { Project } from '@/entity-types/project'
 import { Button } from '@/components/ui/button'
 import {
@@ -82,7 +82,8 @@ export function ProjectMembersDrawer({
                 ) : (
                   availableUsers.map((u) => (
                     <SelectItem key={u.id} value={u.id}>
-                      {`${u.first_name} ${u.last_name}`.trim() || u.sso} ({u.sso})
+                      {`${u.first_name} ${u.last_name}`.trim() || u.sso} (
+                      {u.sso})
                     </SelectItem>
                   ))
                 )}
@@ -93,7 +94,7 @@ export function ProjectMembersDrawer({
           <div className='min-h-0 flex-1 space-y-2 overflow-auto'>
             <label className='text-sm font-medium'>Current members</label>
             {members.length === 0 ? (
-              <p className='text-muted-foreground text-sm'>
+              <p className='text-sm text-muted-foreground'>
                 No members yet. Add one above.
               </p>
             ) : (
@@ -105,7 +106,7 @@ export function ProjectMembersDrawer({
                   >
                     <span className='text-sm'>
                       {userDisplayName(m.user_id)}
-                      <span className='text-muted-foreground ms-1'>
+                      <span className='ms-1 text-muted-foreground'>
                         ({userSso(m.user_id)})
                       </span>
                     </span>

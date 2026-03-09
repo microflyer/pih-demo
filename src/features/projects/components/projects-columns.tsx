@@ -46,24 +46,25 @@ function StatusBadge({ status }: { status: string | null }) {
 
   const styles: Record<string, string> = {
     Active:
-      'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
+      'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800',
     Planning:
-      'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
+      'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-800',
     Draft:
-      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700',
+      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
     Completed:
-      'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
+      'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950 dark:text-blue-200 dark:border-blue-800',
     'On Hold':
-      'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800',
+      'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950 dark:text-orange-200 dark:border-orange-800',
     Cancelled:
-      'bg-red-100 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800',
+      'bg-red-100 text-red-800 border-red-200 dark:bg-red-950 dark:text-red-200 dark:border-red-800',
   }
 
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
-        styles[status] || 'border-slate-200 bg-slate-100 text-slate-600'
+        styles[status] ||
+          'border-slate-200 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
       )}
     >
       {status}
@@ -76,20 +77,21 @@ function StageBadge({ stage }: { stage: string | null }) {
 
   const styles: Record<string, string> = {
     Discovery:
-      'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800',
+      'bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-200 dark:border-indigo-800',
     Proposal:
-      'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800',
+      'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-200 dark:border-yellow-800',
     Execution:
-      'bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800',
+      'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-200 dark:border-cyan-800',
     Closed:
-      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700',
+      'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
   }
 
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
-        styles[stage] || 'border-slate-200 bg-slate-100 text-slate-600'
+        styles[stage] ||
+          'border-slate-200 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
       )}
     >
       {stage}
@@ -102,18 +104,22 @@ function ProjectTypeBadge({ type }: { type: string | null }) {
 
   const styles: Record<string, string> = {
     Delivery:
-      'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
+      'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950 dark:text-blue-200 dark:border-blue-800',
     Internal:
-      'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800',
+      'bg-green-100 text-green-800 border-green-200 dark:bg-green-950 dark:text-green-200 dark:border-green-800',
     'Proof of Concept':
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950 dark:text-purple-200 dark:border-purple-800',
+    Lean: 'bg-teal-100 text-teal-800 border-teal-200 dark:bg-teal-950 dark:text-teal-200 dark:border-teal-800',
+    GB: 'bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-950 dark:text-violet-200 dark:border-violet-800',
+    BB: 'bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-950 dark:text-rose-200 dark:border-rose-800',
   }
 
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium',
-        styles[type] || 'border-slate-200 bg-slate-100 text-slate-600'
+        styles[type] ||
+          'border-slate-200 bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
       )}
     >
       {type}
@@ -123,7 +129,11 @@ function ProjectTypeBadge({ type }: { type: string | null }) {
 
 function BooleanBadge({ value }: { value: boolean | null }) {
   if (!value) return <span className='text-muted-foreground'>No</span>
-  return <span className='font-medium text-foreground'>Yes</span>
+  return (
+    <span className='font-medium text-emerald-600 dark:text-emerald-400'>
+      Yes
+    </span>
+  )
 }
 
 export const projectsColumns: ColumnDef<Project>[] = [
@@ -175,7 +185,7 @@ export const projectsColumns: ColumnDef<Project>[] = [
         <Link
           to='/projects/$projectId'
           params={{ projectId: project.id }}
-          className='font-medium text-primary hover:underline'
+          className='cursor-pointer font-medium text-primary hover:underline'
         >
           <LongText className='max-w-[200px]'>{project.name}</LongText>
         </Link>

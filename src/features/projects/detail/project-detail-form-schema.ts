@@ -3,7 +3,9 @@ import { z } from 'zod'
 const optionalString = z.string().nullable().optional()
 const optionalNumber = z
   .union([
-    z.string().transform((v) => (v === '' || v === undefined ? null : Number(v))),
+    z
+      .string()
+      .transform((v) => (v === '' || v === undefined ? null : Number(v))),
     z.number(),
     z.null(),
   ])

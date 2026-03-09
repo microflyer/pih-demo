@@ -146,11 +146,9 @@ export function ProjectsTable({ data }: ProjectsTableProps) {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className={cn(
-                    'h-11 border-b border-border transition-colors',
-                    index % 2 === 0
-                      ? 'bg-background'
-                      : 'bg-muted/20 hover:bg-muted/30',
-                    'hover:bg-muted/50'
+                    'h-11 border-b border-border transition-colors duration-200',
+                    index % 2 === 0 ? 'bg-background' : 'bg-muted/20',
+                    'cursor-pointer hover:bg-muted/40'
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (

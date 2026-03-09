@@ -1,9 +1,9 @@
 import { users } from '@/entity-data/users'
 import type { Project } from '@/entity-types/project'
 import { UserPlus, Users, X } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { useProjects } from '../components/projects-provider'
 
 function DepartmentBadge({ department }: { department: string | null }) {
@@ -17,7 +17,7 @@ function DepartmentBadge({ department }: { department: string | null }) {
         isLDT
           ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400'
           : 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400'
-      } px-2 py-0 text-[10px] font-semibold uppercase tracking-wider`}
+      } px-2 py-0 text-[10px] font-semibold tracking-wider uppercase`}
     >
       {department}
     </Badge>
@@ -82,7 +82,9 @@ export function TeamMembersPanel({
                       {user.first_name} {user.last_name}
                     </p>
                     <div className='flex items-center gap-2'>
-                      <p className='text-xs text-muted-foreground'>{user.sso}</p>
+                      <p className='text-xs text-muted-foreground'>
+                        {user.sso}
+                      </p>
                       <DepartmentBadge department={user.department} />
                     </div>
                   </div>

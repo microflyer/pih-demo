@@ -41,7 +41,11 @@ export function DataTableFacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='h-8 border-dashed'>
+        <Button
+          variant='outline'
+          size='sm'
+          className='h-8 cursor-pointer border-dashed'
+        >
           <PlusCircledIcon className='size-4' />
           {title}
           {selectedValues?.size > 0 && (
@@ -90,6 +94,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value}
+                    className='cursor-pointer'
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value)

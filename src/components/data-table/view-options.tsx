@@ -23,7 +23,7 @@ export function DataTableViewOptions<TData>({
         <Button
           variant='outline'
           size='sm'
-          className='ms-auto hidden h-8 lg:flex'
+          className='ms-auto hidden h-8 cursor-pointer lg:flex'
         >
           <MixerHorizontalIcon className='size-4' />
           View
@@ -42,7 +42,7 @@ export function DataTableViewOptions<TData>({
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className='capitalize'
+                className='cursor-pointer capitalize'
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >

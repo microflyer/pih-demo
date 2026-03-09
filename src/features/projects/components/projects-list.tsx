@@ -16,6 +16,13 @@ import {
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
@@ -31,9 +38,12 @@ const businessUnitMap = new Map(businessUnits.map((bu) => [bu.id, bu.name]))
 const accountMap = new Map(accounts.map((a) => [a.id, a.name]))
 
 const PROJECT_TYPE_COLORS: Record<string, string> = {
-  Delivery: 'bg-blue-500',
-  Internal: 'bg-green-500',
-  'Proof of Concept': 'bg-purple-500',
+  Delivery: 'bg-blue-600',
+  Internal: 'bg-green-600',
+  'Proof of Concept': 'bg-purple-600',
+  Lean: 'bg-teal-600',
+  GB: 'bg-violet-600',
+  BB: 'bg-rose-600',
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -239,7 +249,7 @@ function ProjectCard({ project }: ProjectCardProps) {
   }
 
   return (
-    <div className='group relative flex flex-col rounded-xl border bg-card p-5 transition-all duration-200 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5'>
+    <div className='group relative flex cursor-pointer flex-col rounded-xl border bg-card p-5 transition-all duration-200 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5'>
       {/* Header */}
       <div className='flex items-start gap-3'>
         {/* Project Avatar */}
@@ -267,42 +277,38 @@ function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* Actions Menu */}
-        <div className='opacity-0 transition-opacity group-hover:opacity-100'>
-          <div className='relative'>
-            <Button variant='ghost' size='icon' className='h-8 w-8'>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='h-8 w-8 cursor-pointer'
+            >
               <MoreHorizontal className='h-4 w-4' />
             </Button>
-            <div className='absolute end-0 top-full z-10 mt-1 hidden w-40 rounded-md border bg-background py-1 shadow-lg group-hover:block'>
-              <Button
-                variant='ghost'
-                size='sm'
-                className='w-full justify-start px-2'
-                onClick={handleEdit}
-              >
-                <Pencil className='me-2 h-4 w-4' />
-                Edit
-              </Button>
-              <Button
-                variant='ghost'
-                size='sm'
-                className='w-full justify-start px-2'
-                onClick={handleManageMembers}
-              >
-                <Users className='me-2 h-4 w-4' />
-                Team
-              </Button>
-              <Button
-                variant='ghost'
-                size='sm'
-                className='w-full justify-start px-2 text-destructive hover:text-destructive'
-                onClick={handleDelete}
-              >
-                <Trash2 className='me-2 h-4 w-4' />
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' className='w-40'>
+            <DropdownMenuItem className='cursor-pointer' onClick={handleEdit}>
+              <Pencil className='me-2 h-4 w-4' />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className='cursor-pointer'
+              onClick={handleManageMembers}
+            >
+              <Users className='me-2 h-4 w-4' />
+              Team
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='cursor-pointer text-destructive focus:text-destructive'
+              onClick={handleDelete}
+            >
+              <Trash2 className='me-2 h-4 w-4' />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Status Badges */}
@@ -369,12 +375,15 @@ function ProjectCard({ project }: ProjectCardProps) {
       <div className='mt-4 flex items-center justify-between border-t pt-3'>
         <div className='flex gap-3'>
           {project.is_billiable && (
-            <Badge variant='default' className='text-xs'>
+            <Badge
+              variant='default'
+              className='cursor-pointer border-emerald-200 bg-emerald-100 text-xs text-emerald-800 hover:bg-emerald-200 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-200'
+            >
               Billable
             </Badge>
           )}
           {project.is_external && (
-            <Badge variant='outline' className='text-xs'>
+            <Badge variant='outline' className='cursor-pointer text-xs'>
               External
             </Badge>
           )}
@@ -382,7 +391,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         <Link
           to='/projects/$projectId'
           params={{ projectId: project.id }}
-          className='text-xs font-medium text-primary hover:underline'
+          className='cursor-pointer text-xs font-medium text-primary hover:underline'
         >
           View details
         </Link>
