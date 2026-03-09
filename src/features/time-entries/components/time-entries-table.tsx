@@ -21,14 +21,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
+import type { TimeEntry } from '@/entity-types/time-entry'
 
 export function TimeEntriesTable() {
-  const { filteredEntries } = useTimeEntries()
+  const { filteredEntries, setOpenDialog, setEditEntry } = useTimeEntries()
   const [sorting, setSorting] = useState<SortingState>([])
+
+  const handleEdit = (entry: TimeEntry) => {
+    setEditEntry(entry)
+    setOpenDialog(true)
+  }
 
   const table = useReactTable({
     data: filteredEntries,
-    columns: timeEntriesColumns,
+    columns: timeEntriesColumns({ onEdit: handleEdit }),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),

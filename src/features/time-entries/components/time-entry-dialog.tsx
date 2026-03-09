@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -83,6 +83,18 @@ export function TimeEntryDialog({ open, onOpenChange, editEntry }: TimeEntryDial
   const [activity, setActivity] = useState(defaultValues.activity)
   const [hours, setHours] = useState(defaultValues.hours)
   const [comments, setComments] = useState(defaultValues.comments)
+
+  // Update form when editEntry changes
+  useEffect(() => {
+    const values = getDefaultValues(editEntry)
+    setDate(values.date)
+    setHasProject(values.hasProject)
+    setProjectId(values.projectId)
+    setThemeId(values.themeId)
+    setActivity(values.activity)
+    setHours(values.hours)
+    setComments(values.comments)
+  }, [editEntry])
 
   // Get activities based on theme
   const activities = themeActivities.filter((a) => a.theme_id === themeId)

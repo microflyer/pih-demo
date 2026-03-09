@@ -11,15 +11,21 @@ import { TimeEntriesPrimaryButtons } from './components/time-entries-primary-but
 import { TimeEntryDialog } from './components/time-entry-dialog'
 
 function TimeEntriesContent() {
-  const { openDialog, setOpenDialog } = useTimeEntries()
+  const { openDialog, setOpenDialog, editEntry, setEditEntry } = useTimeEntries()
+
+  const handleDialogOpenChange = (open: boolean) => {
+    if (!open) {
+      setOpenDialog(false)
+      setEditEntry(null)
+    }
+  }
 
   return (
     <>
       <TimeEntryDialog
         open={openDialog}
-        onOpenChange={(open) => {
-          if (!open) setOpenDialog(false)
-        }}
+        onOpenChange={handleDialogOpenChange}
+        editEntry={editEntry}
       />
       <Header fixed>
         <Search />
