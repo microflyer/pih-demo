@@ -1,16 +1,15 @@
 import { useMemo } from 'react'
 import { z } from 'zod'
+import { format, parseISO } from 'date-fns'
 import { useForm, type Control } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
-import { format, parseISO } from 'date-fns'
 import { accounts } from '@/entity-data/accounts'
 import { businessUnits } from '@/entity-data/business-units'
 import { teams } from '@/entity-data/teams'
 import { themes } from '@/entity-data/themes'
 import { users } from '@/entity-data/users'
 import type { Project } from '@/entity-types/project'
-import { DatePicker } from '@/components/date-picker'
 import {
   Save,
   Info,
@@ -43,6 +42,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { DatePicker } from '@/components/date-picker'
+import { ProjectLocationsField } from '@/features/projects/components/project-locations-field'
 import { useProjects } from '@/features/projects/components/projects-provider'
 
 const PROJECT_TYPES = [
@@ -344,7 +345,10 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5 rounded-xl border border-border/50 bg-muted/30 p-6 shadow-none'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-5 rounded-xl border border-border/50 bg-muted/30 p-6 shadow-none'
+      >
         {/* Basic Info */}
         <div>
           <CardSection
@@ -668,8 +672,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                     <FormLabel>Start Date</FormLabel>
                     <FormControl>
                       <DatePicker
-                        selected={field.value ? parseISO(field.value) : undefined}
-                        onSelect={(date) => field.onChange(date ? format(date, 'yyyy-MM-dd') : '')}
+                        selected={
+                          field.value ? parseISO(field.value) : undefined
+                        }
+                        onSelect={(date) =>
+                          field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
+                        }
                         placeholder='Select start date'
                       />
                     </FormControl>
@@ -684,8 +692,12 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                     <FormLabel>End Date</FormLabel>
                     <FormControl>
                       <DatePicker
-                        selected={field.value ? parseISO(field.value) : undefined}
-                        onSelect={(date) => field.onChange(date ? format(date, 'yyyy-MM-dd') : '')}
+                        selected={
+                          field.value ? parseISO(field.value) : undefined
+                        }
+                        onSelect={(date) =>
+                          field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
+                        }
                         placeholder='Select end date'
                       />
                     </FormControl>
@@ -772,6 +784,9 @@ export function ProjectDetailForm({ project }: ProjectDetailFormProps) {
                 options={themes.map((t) => ({ label: t.name, value: t.id }))}
                 placeholder='Select...'
               />
+              <div className='flex flex-col gap-2'>
+                <ProjectLocationsField projectId={project.id} />
+              </div>
             </div>
           </CardSection>
         </div>

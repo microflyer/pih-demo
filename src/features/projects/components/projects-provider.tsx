@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import type { Project } from '@/entity-types/project'
+import type { ProjectLinkLocation } from '@/entity-types/project-link-location'
 import type { Team } from '@/entity-types/team'
 import { useProjectsStore } from '@/stores/projects-store'
 import useDialogState from '@/hooks/use-dialog-state'
@@ -9,6 +10,7 @@ export type ProjectsDialogType = 'create' | 'delete' | 'members' | null
 type ProjectsContextType = {
   projects: Project[]
   teams: Team[]
+  projectLinkLocations: ProjectLinkLocation[]
   addProject: (project: Project) => void
   updateProject: (id: string, patch: Partial<Project>) => void
   removeProject: (id: string) => void
@@ -16,6 +18,9 @@ type ProjectsContextType = {
   getTeamsByProjectId: (projectId: string) => Team[]
   addTeamMember: (projectId: string, userId: string) => void
   removeTeamMember: (projectId: string, userId: string) => void
+  getLocationsByProjectId: (projectId: string) => ProjectLinkLocation[]
+  addProjectLocation: (projectId: string, locationId: string) => void
+  removeProjectLocation: (id: string) => void
   openDialog: ProjectsDialogType
   setOpenDialog: (v: ProjectsDialogType) => void
   currentProject: Project | null
@@ -27,6 +32,7 @@ const ProjectsContext = React.createContext<ProjectsContextType | null>(null)
 export function ProjectsProvider({ children }: { children: React.ReactNode }) {
   const projects = useProjectsStore((s) => s.projects)
   const teams = useProjectsStore((s) => s.teams)
+  const projectLinkLocations = useProjectsStore((s) => s.projectLinkLocations)
   const addProject = useProjectsStore((s) => s.addProject)
   const updateProject = useProjectsStore((s) => s.updateProject)
   const removeProject = useProjectsStore((s) => s.removeProject)
@@ -34,6 +40,11 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
   const getTeamsByProjectId = useProjectsStore((s) => s.getTeamsByProjectId)
   const addTeamMember = useProjectsStore((s) => s.addTeamMember)
   const removeTeamMember = useProjectsStore((s) => s.removeTeamMember)
+  const getLocationsByProjectId = useProjectsStore(
+    (s) => s.getLocationsByProjectId
+  )
+  const addProjectLocation = useProjectsStore((s) => s.addProjectLocation)
+  const removeProjectLocation = useProjectsStore((s) => s.removeProjectLocation)
 
   const [openDialog, setOpenDialog] = useDialogState<
     'create' | 'delete' | 'members'
@@ -43,6 +54,7 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
   const value: ProjectsContextType = {
     projects,
     teams,
+    projectLinkLocations,
     addProject,
     updateProject,
     removeProject,
@@ -50,6 +62,9 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
     getTeamsByProjectId,
     addTeamMember,
     removeTeamMember,
+    getLocationsByProjectId,
+    addProjectLocation,
+    removeProjectLocation,
     openDialog,
     setOpenDialog,
     currentProject,
