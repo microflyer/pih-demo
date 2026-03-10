@@ -59,8 +59,8 @@ export function ProjectTimeItem({ project, date, isOpen: controlledIsOpen, onOpe
                   </span>
                 )}
                 {totalHours > 0 && (
-                  <span className="text-[10px] text-muted-foreground">
-                    ({totalHours.toFixed(1)}h)
+                  <span className="inline-flex items-center rounded-full bg-teal-500/15 border border-teal-500/20 px-2.5 py-0.5 text-xs font-bold tabular-nums">
+                    <span className="text-teal-600 dark:text-teal-400">{totalHours.toFixed(1)}h</span>
                   </span>
                 )}
               </div>
@@ -106,7 +106,7 @@ export function ProjectTimeItem({ project, date, isOpen: controlledIsOpen, onOpe
                       )}
                     </div>
                     <div className="flex items-center gap-2 ml-auto">
-                      <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold tabular-nums text-primary">
+                      <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-semibold tabular-nums text-muted-foreground">
                         {entry.hours}h
                       </span>
                       <Button

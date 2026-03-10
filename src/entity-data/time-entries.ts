@@ -115,11 +115,11 @@ export const timeEntries: TimeEntry[] = [
   {
     id: 'te-012',
     activity: 'UAT Execution & Monitoring',
-    hours: 4,
-    comments: 'UAT testing for BUPA Healthcare Integration',
+    hours: 3,
+    comments: 'UAT testing for Lifesciences Regulatory Reporting',
     theme_id: 'theme-004',
     has_project: true,
-    project_id: 'proj-004',
+    project_id: 'proj-006',
     date: '2026-03-10',
   },
 ]
