@@ -19,6 +19,7 @@ function MyTimeContent() {
   const { projects } = useMyTime()
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({})
+  const [isNonProjectsExpanded, setIsNonProjectsExpanded] = useState(false)
 
   const dateString = useMemo(() => {
     return format(selectedDate, 'yyyy-MM-dd')
@@ -34,8 +35,8 @@ function MyTimeContent() {
     }
   }
 
-  const isAllExpanded = projects.every(p => expandedProjects[p.id] !== false)
-  const isAllCollapsed = projects.every(p => expandedProjects[p.id] === false)
+  const isAllExpanded = projects.every(p => expandedProjects[p.id] === true) && isNonProjectsExpanded
+  const isAllCollapsed = projects.every(p => expandedProjects[p.id] === false) && !isNonProjectsExpanded
 
   const toggleAll = () => {
     if (isAllExpanded) {
@@ -43,11 +44,13 @@ function MyTimeContent() {
       const allCollapsed: Record<string, boolean> = {}
       projects.forEach(p => { allCollapsed[p.id] = false })
       setExpandedProjects(allCollapsed)
+      setIsNonProjectsExpanded(false)
     } else {
       // Expand all
       const allExpanded: Record<string, boolean> = {}
       projects.forEach(p => { allExpanded[p.id] = true })
       setExpandedProjects(allExpanded)
+      setIsNonProjectsExpanded(true)
     }
   }
 
@@ -56,8 +59,8 @@ function MyTimeContent() {
   }
 
   const isProjectExpanded = (projectId: string) => {
-    // Default to true if not set
-    return expandedProjects[projectId] !== false
+    // Default to false (collapsed) if not set
+    return expandedProjects[projectId] === true
   }
 
   return (
@@ -142,7 +145,11 @@ function MyTimeContent() {
             Non-Projects
           </div>
           <div className="rounded-md bg-card p-2">
-            <NonProjectTime date={dateString} />
+            <NonProjectTime
+              date={dateString}
+              isExpanded={isNonProjectsExpanded}
+              onExpandedChange={setIsNonProjectsExpanded}
+            />
           </div>
         </div>
       </Main>

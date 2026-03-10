@@ -12,12 +12,18 @@ import { themes } from '@/entity-data/themes'
 
 interface NonProjectTimeProps {
   date: string
+  isExpanded?: boolean
+  onExpandedChange?: (expanded: boolean) => void
 }
 
-export function NonProjectTime({ date }: NonProjectTimeProps) {
+export function NonProjectTime({ date, isExpanded = false, onExpandedChange }: NonProjectTimeProps) {
   const { timeEntries, deleteTimeEntry } = useMyTime()
-  const [isOpen, setIsOpen] = useState(true)
+  const [internalExpanded, setInternalExpanded] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  // Use controlled state if provided, otherwise use internal state
+  const isOpen = onExpandedChange !== undefined ? isExpanded : internalExpanded
+  const setIsOpen = onExpandedChange !== undefined ? onExpandedChange : setInternalExpanded
 
   // Filter non-project time entries for this date
   const nonProjectEntries = useMemo(() => {
